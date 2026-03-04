@@ -1,0 +1,281 @@
+/* Integrated Auth Layout */
+.auth-container {
+    display: flex;
+    min-height: 100vh;
+    background: #f7fafc;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Centered Integrated Container */
+.branding-section {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    min-height: 550px;
+    background: linear-gradient(135deg, rgba(30, 58, 95, 0.5) 0%, rgba(44, 82, 130, 0.5) 100%),
+        url('/assets/vecteezy_colorful-gradient-background-abstract-holographic_17730176.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 10;
+    border-radius: 40px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Wrapper for internal side-by-side layout */
+.integrated-auth-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3rem;
+    z-index: 20;
+    gap: 3rem;
+}
+
+/* Gold Shine Animation */
+.branding-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 250%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255, 215, 0, 0.1) 50%, transparent 60%, transparent 100%);
+    animation: goldShine 8s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes goldShine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Hanging Logo Animation */
+.hanging-logo {
+    transform-origin: top center;
+    animation: swing 3s ease-in-out infinite alternate;
+}
+
+@keyframes swing {
+    0% {
+        transform: rotate(-10deg);
+    }
+
+    100% {
+        transform: rotate(10deg);
+    }
+}
+
+/* Overlay for depths */
+.watery-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(44, 82, 130, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(30, 58, 95, 0.15) 0%, transparent 50%);
+    z-index: 1;
+}
+
+/* Branding Side */
+.branding-content {
+    flex: 1;
+    text-align: center;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.brand-logo {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+    margin-bottom: 1rem;
+}
+
+.brand-title {
+    color: #ffffff;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.brand-slogan {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.2rem;
+    font-weight: 300;
+}
+
+/* Form Side - Restored Solid White Card */
+.form-container {
+    flex: 0 0 420px;
+    background: #ffffff;
+    border: 1px solid #edf2f7;
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    animation: zoomIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-card-decoration {
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+    width: 100px;
+    opacity: 1;
+    pointer-events: none;
+    z-index: 30;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+.form-title {
+    color: #1e3a5f;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.form-subtitle {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Transitions */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Form Controls Integration - Back to Dark on White */
+.form-label {
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.input-group-text {
+    background: #f8fafc !important;
+    border: 1px solid #2c5282 !important;
+    border-right: none !important;
+    color: #2c5282 !important;
+}
+
+.form-control {
+    background: #ffffff !important;
+    border: 1px solid #2c5282 !important;
+    color: #1e293b !important;
+    padding: 0.7rem 1rem !important;
+}
+
+.form-control::placeholder {
+    color: #94a3b8 !important;
+}
+
+.form-control:focus {
+    background: #ffffff !important;
+    border-color: #1e3a5f !important;
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.15) !important;
+}
+
+.btn-outline-secondary {
+    border: 1px solid #2c5282 !important;
+    border-left: none !important;
+    color: #2c5282 !important;
+}
+
+.btn-outline-secondary:hover {
+    background: #f1f5f9 !important;
+    color: #1e3a5f !important;
+}
+
+/* Blur Effect for Modal */
+.blur-background {
+    filter: blur(8px);
+    pointer-events: none;
+    transition: filter 0.3s ease;
+}
+
+/* Navy Button with Gold Highlight */
+.btn-navy {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    color: #ffffff;
+    padding: 0.8rem;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-navy:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 215, 0, 0.8);
+}
+
+/* Styles for divider and old link buttons removed */
+
+/* Responsive */
+@media (max-width: 992px) {
+    .integrated-auth-wrapper {
+        flex-direction: column;
+        gap: 3rem;
+        padding-top: 4rem;
+        overflow-y: auto;
+    }
+
+    .branding-section {
+        height: auto;
+        min-height: 100vh;
+        align-items: flex-start;
+    }
+
+    .form-container {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 450px;
+        padding: 2rem;
+    }
+
+    .brand-title {
+        font-size: 2rem;
+    }
+}
