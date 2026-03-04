@@ -122,8 +122,9 @@ Run tests with:
 This project is for educational purposes.
 
 ## 👥 Contributors
-
+- Thabiso Maladji
 - Kulani Baloyi
+- Munyai Dzulani
 
 ## 📞 Support
 
