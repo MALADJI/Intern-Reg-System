@@ -1,0 +1,112 @@
+/* Profile Settings Styles */
+.nav-pills .nav-link {
+  color: #495057;
+  border-radius: 0.375rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-pills .nav-link:hover {
+  background-color: #f8f9fa;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #303f61;
+  color: white;
+}
+
+.card-header.bg-primary {
+  background-color: #303f61 !important;
+  padding-top: 40px;
+}
+
+
+
+.btn-primary {
+  background-color: #303f61;
+  border-color: #303f61;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #25304d;
+  border-color: #25304d;
+}
+
+.form-control:read-only {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .container-fluid {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 80px !important;
+    /* Space for fixed navbar on mobile */
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .card-header h5 {
+    font-size: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .input-group .btn {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (min-width: 300px) and (max-width: 768px) {
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 100px !important;
+    /* Space for fixed navbar on tablet */
+  }
+}
+
+/* Ensure cards are fully visible */
+.card {
+  overflow: visible;
+  word-wrap: break-word;
+}
+
+/* Prevent horizontal scrolling - consolidate with top padding rule */
+:host ::ng-deep .container-fluid,
+.container-fluid {
+  max-width: 100%;
+  overflow-x: hidden;
+  padding-top: 100px !important;
+  /* Space for fixed navbar */
+}
+
+/* Ensure form inputs don't overflow */
+.form-control {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive table-like behavior for small screens */
+@media (max-width: 576px) {
+  .row.g-3>[class*="col-"] {
+    margin-bottom: 0.75rem;
+  }
+}

@@ -1,0 +1,299 @@
+<div class="help-overlay" *ngIf="isVisible" (click)="close()">
+  <div class="help-modal shadow-lg" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="modal-header-custom p-4 text-white">
+      <div class="d-flex align-items-center">
+        <div class="help-icon-circle me-3">
+          <i class="bi bi-question-lg fs-3"></i>
+        </div>
+        <div>
+          <h4 class="mb-0 fw-bold">{{ getRoleTitle() }}</h4>
+          <p class="mb-0 small opacity-75">Comprehensive Guide to the Intern Registration System</p>
+        </div>
+      </div>
+      <button class="btn-close-custom" (click)="close()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body-custom d-flex">
+      <!-- Sidebar Navigation -->
+      <div class="help-sidebar p-3">
+        <button class="help-nav-item" [class.active]="activeTab === 'general'" (click)="setActiveTab('general')">
+          <i class="bi bi-info-circle me-2"></i> General Overview
+        </button>
+        
+        <!-- Role Specific Tabs -->
+        <ng-container [ngSwitch]="userRole">
+          <!-- INTERN TABS -->
+          <ng-container *ngSwitchCase="'INTERN'">
+            <button class="help-nav-item" [class.active]="activeTab === 'attendance'" (click)="setActiveTab('attendance')">
+              <i class="bi bi-clock me-2"></i> Attendance Tracking
+            </button>
+            <button class="help-nav-item" [class.active]="activeTab === 'leave'" (click)="setActiveTab('leave')">
+              <i class="bi bi-calendar-check me-2"></i> Leave Management
+            </button>
+            <button class="help-nav-item" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')">
+              <i class="bi bi-file-earmark-bar-graph me-2"></i> Self Reporting
+            </button>
+          </ng-container>
+
+          <!-- SUPERVISOR TABS -->
+          <ng-container *ngSwitchCase="'SUPERVISOR'">
+            <button class="help-nav-item" [class.active]="activeTab === 'monitoring'" (click)="setActiveTab('monitoring')">
+              <i class="bi bi-broadcast me-2"></i> Live Monitoring
+            </button>
+            <button class="help-nav-item" [class.active]="activeTab === 'approvals'" (click)="setActiveTab('approvals')">
+              <i class="bi bi-check-all me-2"></i> Task Approvals
+            </button>
+            <button class="help-nav-item" [class.active]="activeTab === 'analytics'" (click)="setActiveTab('analytics')">
+              <i class="bi bi-graph-up-arrow me-2"></i> Dept. Analytics
+            </button>
+          </ng-container>
+
+          <!-- ADMIN / SUPER_ADMIN TABS -->
+          <ng-container *ngIf="userRole === 'ADMIN' || userRole === 'SUPER_ADMIN'">
+            <button class="help-nav-item" [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">
+              <i class="bi bi-people-fill me-2"></i> User Lifecycle
+            </button>
+            <button class="help-nav-item" [class.active]="activeTab === 'structure'" (click)="setActiveTab('structure')">
+              <i class="bi bi-diagram-3 me-2"></i> Organization Map
+            </button>
+            <button class="help-nav-item" [class.active]="activeTab === 'system'" (click)="setActiveTab('system')">
+              <i class="bi bi-shield-lock me-2"></i> System Governance
+            </button>
+          </ng-container>
+        </ng-container>
+
+        <button class="help-nav-item mt-auto" [class.active]="activeTab === 'faq'" (click)="setActiveTab('faq')">
+          <i class="bi bi-chat-left-text me-2"></i> Common Troubleshooting
+        </button>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="help-content-area p-4 overflow-auto">
+        
+        <!-- GENERAL CONTENT -->
+        <div *ngIf="activeTab === 'general'" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">Getting Started</h5>
+          <p class="text-secondary">Welcome to the Unified Intern Registration System. This platform serves as the central hub for tracking time, managing academic workplace requirements, and generating institutional reports.</p>
+          
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="help-card p-3 h-100">
+                <h6 class="fw-bold text-navy"><i class="bi bi-speedometer2 me-2"></i> The Dashboard</h6>
+                <p class="small text-muted mb-0">Your homepage displays real-time statistics, recent activities, and shortcuts to your most-used modules.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="help-card p-3 h-100">
+                <h6 class="fw-bold text-navy"><i class="bi bi-bell me-2"></i> Notifications</h6>
+                <p class="small text-muted mb-0">Stay updated on leave approvals, system alerts, and reminders via the bell icon in the top navbar.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="help-card p-3 mt-3">
+            <h6 class="fw-bold text-navy"><i class="bi bi-shield-check me-2"></i> Security & Profile</h6>
+            <p class="small text-muted mb-0">Ensure your account is secure. Keep your department and field information up to date by visiting the <strong>Settings</strong> page (gear icon).</p>
+          </div>
+        </div>
+
+        <!-- INTERN ATTENDANCE (DETAILED) -->
+        <div *ngIf="activeTab === 'attendance' && userRole === 'INTERN'" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">Mastering Attendance Tracking</h5>
+          
+          <div class="guideline-block mb-4">
+            <h6 class="fw-bold"><i class="bi bi-geo-alt text-danger me-2"></i> 1. Location Verification</h6>
+            <p class="small text-muted">The system requires GPS verification. When you click "Clock In", your browser will ask for location permission. **You must "Allow" this** to proceed. Ensure you are within the designated university zone.</p>
+          </div>
+
+          <div class="guideline-block mb-4">
+            <h6 class="fw-bold"><i class="bi bi-vector-pen text-primary me-2"></i> 2. Digital Signatures</h6>
+            <p class="small text-muted">A clear digital signature is required for every entry and exit. Use your mouse or touch screen. If you make a mistake, use the "Clear" button and redraw before saving.</p>
+          </div>
+
+          <div class="guideline-block mb-4">
+            <h6 class="fw-bold"><i class="bi bi-exclamation-triangle text-warning me-2"></i> 3. Forget to Clock Out?</h6>
+            <p class="small text-muted">If you leave without clocking out, your session remains "Active". The next time you log in, you must complete the previous session's clock-out before starting a new day. Continuous "Active" sessions may require supervisor intervention.</p>
+          </div>
+        </div>
+
+        <!-- INTERN LEAVE (DETAILED) -->
+        <div *ngIf="activeTab === 'leave' && userRole === 'INTERN'" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">Leave Management Workflow</h5>
+          
+          <div class="help-card p-3 bg-light border-0 mb-3">
+            <p class="small mb-0"><strong>Pro-Tip:</strong> Always submit leave requests at least 48 hours in advance for planned absences.</p>
+          </div>
+
+          <div class="step-item mb-3">
+            <div class="step-number">1</div>
+            <div>
+              <h6 class="fw-bold mb-0">Filling the Form</h6>
+              <p class="small text-muted mb-0">Specify the dates and the <strong>reason</strong> for absence clearly. This helps your supervisor make a quick decision.</p>
+            </div>
+          </div>
+
+          <div class="step-item mb-3">
+            <div class="step-number">2</div>
+            <div>
+              <h6 class="fw-bold mb-0">Supporting Documents</h6>
+              <p class="small text-muted mb-0">For medical leave, uploading a scanned doctor's note is <strong>mandatory</strong>. Use the "Upload" field in the leave form.</p>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div>
+              <h6 class="fw-bold mb-0">Monitor Status</h6>
+              <p class="small text-muted mb-0">Track your request in the "My Leave" table. Statuses: <span class="badge bg-warning">Pending</span>, <span class="badge bg-success">Approved</span>, or <span class="badge bg-danger">Rejected</span>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- INTERN REPORTS -->
+        <div *ngIf="activeTab === 'reports' && userRole === 'INTERN'" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">Generating Progress Reports</h5>
+          <p>The "Reports" module allows you to export your data for academic or payroll purposes.</p>
+          <div class="help-card p-3 mb-3">
+            <h6 class="fw-bold"><i class="bi bi-file-pdf me-2 text-danger"></i> Weekly Log Export</h6>
+            <p class="small text-muted mb-0">Select your current week and generate a PDF. This summary includes your total hours worked and all digital signatures verified by GPS.</p>
+          </div>
+          <div class="help-card p-3">
+            <h6 class="fw-bold"><i class="bi bi-calendar3 me-2 text-primary"></i> Monthly Summary</h6>
+            <p class="small text-muted mb-0">Use the monthly view to see your cumulative attendance status for the entire term.</p>
+          </div>
+        </div>
+
+        <!-- SUPERVISOR MONITORING (DETAILED) -->
+        <div *ngIf="activeTab === 'monitoring' && userRole === 'SUPERVISOR'" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">Real-Time Team Visibility</h5>
+          
+          <div class="help-card p-3 mb-4 border-success">
+            <h6 class="fw-bold"><i class="bi bi-lightning-charge-fill text-success me-2"></i> Live Presence Indicators</h6>
+            <p class="small text-muted mb-0">Rows in the dashboard that **glow green** indicate interns currently logged into the system. This allows for real-time verification of who is working.</p>
+          </div>
+
+          <h6 class="fw-bold small text-uppercase letter-spacing-1 mb-2">Key Management Tasks:</h6>
+          <ul class="help-list">
+            <li><strong>Audit Logs:</strong> Review detailed clock-in times, GPS tags, and signatures for every intern in your department.</li>
+            <li><strong>Intern Profiles:</strong> Access assigned intern contact details and academic fields via the "Interns" tab.</li>
+            <li><strong>Verification:</strong> Flag entries that appear suspicious (e.g., incorrect location tags) for departmental review.</li>
+          </ul>
+        </div>
+
+        <!-- SUPERVISOR APPROVALS -->
+        <div *ngIf="activeTab === 'approvals' && userRole === 'SUPERVISOR'" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">Managing Intern Requests</h5>
+          <p>As a supervisor, you are responsible for approving absences and verifying work schedules.</p>
+          <div class="help-card p-3 mb-3">
+            <h6 class="fw-bold">Leave Approval Lifecycle</h6>
+            <p class="small text-muted">Review the "Leave Requests" tab. Open a request to view attachments. You can either <span class="text-success fw-bold">Approve</span> or <span class="text-danger fw-bold">Reject</span> with a reason.</p>
+          </div>
+          <div class="help-card p-3">
+            <h6 class="fw-bold">Schedule Overrides</h6>
+            <p class="small text-muted">If an intern forgets to clock out, you can manually verify and settle their log via the "Logs" management module.</p>
+          </div>
+        </div>
+
+        <!-- SUPERVISOR ANALYTICS -->
+        <div *ngIf="activeTab === 'analytics' && userRole === 'SUPERVISOR'" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">Departmental Analytics</h5>
+          <p>Gain insights into your department's attendance trends.</p>
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="help-card p-3 text-center border-0 bg-light">
+                <i class="bi bi-bar-chart-line fs-1 text-navy mb-2"></i>
+                <h6 class="fw-bold small">Attendance Trends</h6>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="help-card p-3 text-center border-0 bg-light">
+                <i class="bi bi-pie-chart fs-1 text-navy mb-2"></i>
+                <h6 class="fw-bold small">Leave Distribution</h6>
+              </div>
+            </div>
+          </div>
+          <p class="small text-muted mt-3">Use these charts to identify frequent absences or peak attendance hours across your team.</p>
+        </div>
+
+        <!-- ADMIN USER LIFECYCLE -->
+        <div *ngIf="activeTab === 'users' && (userRole === 'ADMIN' || userRole === 'SUPER_ADMIN')" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">User Lifecycle Management</h5>
+          
+          <div class="guideline-block mb-4">
+            <h6 class="fw-bold">User Provisioning</h6>
+            <p class="small text-muted">When adding new users, ensure you select the correct <strong>Role</strong>. Interns must be assigned to an active <strong>Supervisor</strong> to enable attendance tracking.</p>
+          </div>
+
+          <div class="guideline-block mb-4">
+            <h6 class="fw-bold">Credentials Management</h6>
+            <p class="small text-muted">Admins have the power to reset passwords for users who are locked out. Use the "Edit User" modal to update security credentials or deactivate accounts of graduated interns.</p>
+          </div>
+
+          <div class="help-card p-3 bg-soft-navy">
+            <h6 class="fw-bold small mb-1">Mass Import (Coming Soon)</h6>
+            <p class="small text-muted mb-0">Institutional Super Admins will soon be able to bulk-upload intern lists via CSV.</p>
+          </div>
+        </div>
+
+        <!-- ADMIN STRUCTURE -->
+        <div *ngIf="activeTab === 'structure' && (userRole === 'ADMIN' || userRole === 'SUPER_ADMIN')" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">Organizational Hierarchy</h5>
+          <p>Configure the university structure to ensure accurate data mapping.</p>
+          <div class="help-card p-3 mb-3">
+            <h6 class="fw-bold">1. Departments</h6>
+            <p class="small text-muted mb-0">Create Faculty/Departments (e.g., School of Law, ICT). Supervisors and Interns must belong to one of these.</p>
+          </div>
+          <div class="help-card p-3">
+            <h6 class="fw-bold">2. Fields of Study</h6>
+            <p class="small text-muted mb-0">Add specific academic fields (e.g., Computer Science, Accounting) within departments to categorize intern cohorts.</p>
+          </div>
+        </div>
+
+        <!-- ADMIN SYSTEM -->
+        <div *ngIf="activeTab === 'system' && (userRole === 'ADMIN' || userRole === 'SUPER_ADMIN')" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-3 text-navy border-bottom pb-2">Global System Governance</h5>
+          <div class="mb-4">
+            <h6 class="fw-bold small"><i class="bi bi-journal-text me-2"></i> Audit Logs</h6>
+            <p class="small text-muted">Access the master activity log to track every action in the system, including logins, profile changes, and data deletions.</p>
+          </div>
+          <div class="mb-4">
+            <h6 class="fw-bold small"><i class="bi bi-shield-lock me-2"></i> Security Policy</h6>
+            <p class="small text-muted">Configure session timeouts and global access permissions for different user roles.</p>
+          </div>
+        </div>
+
+        <!-- FAQ / TROUBLESHOOTING -->
+        <div *ngIf="activeTab === 'faq'" class="help-section animate-fade-in">
+          <h5 class="fw-bold mb-4 text-navy border-bottom pb-2">Troubleshooting Hub</h5>
+          
+          <div class="accordion" id="helpAccordion">
+            <div class="help-card p-3 mb-2">
+              <h6 class="fw-bold small mb-1">System says "Location Access Denied"?</h6>
+              <p class="small text-muted mb-0">Click the lock icon in your browser's address bar, reset permissions for this site, and refresh the page. Ensure your device's global GPS is ON.</p>
+            </div>
+
+            <div class="help-card p-3 mb-2">
+              <h6 class="fw-bold small mb-1">Why can't I see my intern's reports?</h6>
+              <p class="small text-muted mb-0">Ensure the intern is correctly assigned to your Department in their profile settings. Admins can verify these links in the User Management portal.</p>
+            </div>
+
+            <div class="help-card p-3 mb-2">
+              <h6 class="fw-bold small mb-1">How do I generate a Monthly Report?</h6>
+              <p class="small text-muted mb-0">Navigate to the "Reports" module, select the desired month, and click "Export PDF". This will include all verified signatures for the period.</p>
+            </div>
+
+            <div class="help-card p-3">
+              <h6 class="fw-bold small mb-1">Session timeout issues?</h6>
+              <p class="small text-muted mb-0">For security, sessions expire after 24 hours of inactivity. Simply log back in to refresh your token.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

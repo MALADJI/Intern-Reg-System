@@ -1,0 +1,188 @@
+<div class="auth-container" [class.blur-background]="showResetModal">
+    <!-- Combined Branding and Form Section -->
+    <div class="branding-section">
+        <div class="watery-overlay"></div>
+
+        <div class="integrated-auth-wrapper">
+            <!-- Branding Content -->
+            <div class="branding-content">
+                <img src="assets/univen-logo.png" alt="University of Venda Logo" class="brand-logo">
+                <h1 class="brand-title">University of Venda</h1>
+                <p class="brand-slogan">Intern Online Register System</p>
+                <div class="mt-4">
+                    <img src="assets/welcome-back.png" alt="Welcome Back" class="hanging-logo"
+                        style="max-width: 100px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="form-container">
+                <h2 class="form-title">Welcome Back!</h2>
+                <p class="form-subtitle">Please sign in to your account</p>
+
+                <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+                    <!-- Identity/Username -->
+                    <div class="mb-3">
+                        <label for="loginUsername" class="form-label">Username / Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input type="text" id="loginUsername" name="loginUsername" class="form-control"
+                                placeholder="Enter your identity" [(ngModel)]="loginUsername" required>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label for="loginPassword" class="form-label mb-0">Password</label>
+                            <a href="javascript:void(0)" (click)="openResetModal()"
+                                class="text-decoration-none small fw-semibold" style="color: #2c5282;">Forgot
+                                Password?</a>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input [type]="showLoginPassword ? 'text' : 'password'" id="loginPassword"
+                                name="loginPassword" class="form-control" placeholder="••••••••"
+                                [(ngModel)]="loginPassword" required>
+                            <button class="btn btn-outline-secondary" type="button"
+                                (click)="showLoginPassword = !showLoginPassword">
+                                <i class="bi" [ngClass]="showLoginPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-navy py-2" [disabled]="!loginForm.valid || isLoginLoading">
+                            <span *ngIf="isLoginLoading" class="spinner-border spinner-border-sm me-2"></span>
+                            {{ isLoginLoading ? 'Signing in...' : 'Sign In' }}
+                        </button>
+                    </div>
+
+                    <div class="text-center">
+                        <span class="text-muted small">Don't have an account?</span>
+                        <a routerLink="/sign-up/sign-up" class="text-decoration-none fw-bold ms-1 small"
+                            style="color: #1e3a5f;">Create an Account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Decorative Image -->
+        <img src="assets/undraw_new-years-resolutions_jzwq.svg" alt="Decoration" class="login-card-decoration">
+    </div>
+
+    <!-- About & Contact Info Footer -->
+    <div class="auth-info-footer">
+        <div class="info-column">
+            <h3><i class="bi bi-info-circle me-2"></i>About System</h3>
+            <p>The University of Venda Intern Online Register System is a modern, integrated platform designed to
+                streamline intern management, attendance tracking, and performance monitoring across all departments.
+            </p>
+        </div>
+        <div class="info-column">
+            <h3><i class="bi bi-envelope me-2"></i>Contact Support</h3>
+            <div class="contact-item">
+                <i class="bi bi-telephone"></i>
+                <span>+27 15 962 8000</span>
+            </div>
+            <div class="contact-item">
+                <i class="bi bi-envelope-at"></i>
+                <span>support@univen.ac.za</span>
+            </div>
+            <div class="contact-item">
+                <i class="bi bi-geo-alt"></i>
+                <span>University Road, Thohoyandou, Limpopo</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Password Reset Modal -->
+<div class="modal fade" [class.show]="showResetModal" [style.display]="showResetModal ? 'block' : 'none'"
+    id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" [attr.aria-hidden]="!showResetModal"
+    [style.background-color]="showResetModal ? 'rgba(0,0,0,0.5)' : 'transparent'" (click)="closeResetModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-semibold" id="resetPasswordModalLabel">Reset Password</h5>
+                <button type="button" class="btn-close" (click)="closeResetModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="resetForm" (ngSubmit)="isResetCodeSent ? resetPassword() : sendResetCode()"
+                    novalidate>
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="resetEmail" class="form-label text-dark fw-medium">
+                            Email Address <span class="text-danger">*</span>
+                        </label>
+                        <input type="email" id="resetEmail" formControlName="email" class="form-control"
+                            placeholder="yourname@univen.ac.za" [readonly]="isResetCodeSent">
+                    </div>
+
+                    <!-- Verification Code (shown after code is sent) -->
+                    <div class="mb-3" *ngIf="isResetCodeSent">
+                        <label for="verificationCode" class="form-label text-dark fw-medium">
+                            Verification Code <span class="text-danger">*</span>
+                        </label>
+                        <!-- Display code prominently if available -->
+                        <div *ngIf="resetVerificationCode" class="alert alert-info mb-2"
+                            style="background-color: #e7f3ff; border: 1px solid #b3d9ff;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted d-block mb-1">Your verification code:</small>
+                                    <strong class="blurry-text"
+                                        style="font-size: 18px; color: #26406e; letter-spacing: 2px;">{{
+                                        resetVerificationCode }}</strong>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary"
+                                    (click)="copyCode(resetVerificationCode)">
+                                    <i class="bi bi-clipboard me-1"></i>Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="verificationCode" formControlName="verificationCode"
+                                class="form-control" placeholder="Enter 6-digit code" maxlength="6">
+                        </div>
+                        <small class="text-muted" *ngIf="resetCountdown > 0">Resend code in {{ resetCountdown
+                            }}s</small>
+                    </div>
+
+                    <!-- New Password (shown after code is sent) -->
+                    <div class="mb-3" *ngIf="isResetCodeSent">
+                        <label for="resetPassword" class="form-label text-dark fw-medium">
+                            New Password <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="password" id="resetPassword" formControlName="password" class="form-control"
+                                placeholder="Create a strong password">
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password (shown after code is sent) -->
+                    <div class="mb-3" *ngIf="isResetCodeSent">
+                        <label for="resetConfirmPassword" class="form-label text-dark fw-medium">
+                            Confirm Password <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="password" id="resetConfirmPassword" formControlName="confirmPassword"
+                                class="form-control" placeholder="Re-enter your password">
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-navy w-100 fw-bold"
+                            [disabled]="isResetCodeSent ? resetForm.invalid : resetForm.get('email')?.invalid">
+                            <span *ngIf="!isResetCodeSent">Send Verification Code</span>
+                            <span *ngIf="isResetCodeSent">Reset Password</span>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary w-100" (click)="closeResetModal()">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+/* Help Floating Action Button */
+.help-fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--univen-navy) 0%, #1e3a5f 100%);
+  color: white;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 8px 32px rgba(30, 58, 95, 0.3);
+  cursor: pointer;
+  z-index: 999;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.help-fab:hover {
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 12px 40px rgba(30, 58, 95, 0.4);
+}
+
+.help-fab:active {
+  transform: scale(0.95);
+}
+
+/* Tooltip on hover */
+.help-tooltip {
+  position: absolute;
+  right: 75px;
+  background: var(--univen-navy);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.help-fab:hover .help-tooltip {
+  opacity: 1;
+  visibility: visible;
+  right: 80px;
+}
+
+/* Pulse animation for new users */
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 rgba(30, 58, 95, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(30, 58, 95, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(30, 58, 95, 0); }
+}
+
+.help-fab {
+  animation: pulse-glow 3s infinite;
+}

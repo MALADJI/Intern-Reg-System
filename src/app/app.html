@@ -1,0 +1,20 @@
+<div class="top-utility-bar" *ngIf="!isAuthPage()">
+  <a class="utility-link" (click)="openAboutSystem()">
+    <i class="bi bi-info-circle"></i> About System
+  </a>
+  <div class="utility-divider"></div>
+  <a class="utility-link" (click)="contactSupport()">
+    <i class="bi bi-headset"></i> Contact Support
+  </a>
+</div>
+
+<app-navbar *ngIf="!isAuthPage()"></app-navbar>
+
+<!-- Help Floating Action Button -->
+<button class="help-fab" (click)="toggleHelp()" *ngIf="!isAuthPage()" title="Open Help Center">
+  <i class="bi bi-question-lg"></i>
+  <span class="help-tooltip">Help?</span>
+</button>
+
+<app-help-modal></app-help-modal>
+<router-outlet></router-outlet>

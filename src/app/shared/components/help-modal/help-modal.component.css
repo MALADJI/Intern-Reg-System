@@ -1,0 +1,239 @@
+/* Help Overlay */
+.help-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Modal Container */
+.help-modal {
+    width: 900px;
+    max-width: 90%;
+    height: 600px;
+    max-height: 85vh;
+    background: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Modal Header */
+.modal-header-custom {
+    background: linear-gradient(135deg, var(--univen-navy) 0%, #1e3a5f 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.help-icon-circle {
+    width: 54px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-close-custom {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-close-custom:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Modal Body Layout */
+.modal-body-custom {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.help-sidebar {
+    width: 250px;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.help-nav-item {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+
+.help-nav-item i {
+    font-size: 1.1rem;
+}
+
+.help-nav-item:hover {
+    background: #f1f5f9;
+    color: var(--univen-navy);
+}
+
+.help-nav-item.active {
+    background: #ffffff;
+    color: var(--univen-navy);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(30, 58, 95, 0.1);
+}
+
+/* Content Area */
+.help-content-area {
+    flex-grow: 1;
+}
+
+.help-section {
+    max-width: 600px;
+}
+
+/* Help Cards */
+.help-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.help-card:hover {
+    border-color: var(--univen-navy);
+    box-shadow: 0 8px 24px rgba(30, 58, 95, 0.08);
+}
+
+.help-list {
+    padding-left: 20px;
+    color: #475569;
+}
+
+.help-list li {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+/* Steps */
+.step-item {
+    display: flex;
+    gap: 16px;
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: var(--univen-navy);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.bg-soft-navy {
+    background: rgba(30, 58, 95, 0.05);
+}
+
+.letter-spacing-1 {
+    letter-spacing: 1px;
+}
+
+.text-navy {
+    color: var(--univen-navy);
+}
+
+.guideline-block {
+    padding-left: 12px;
+    border-left: 3px solid #e2e8f0;
+    transition: all 0.2s;
+}
+
+.guideline-block:hover {
+    border-left-color: var(--univen-navy);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .help-modal {
+        width: 95%;
+        height: 90vh;
+    }
+
+    .modal-body-custom {
+        flex-direction: column;
+    }
+
+    .help-sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 10px;
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .help-nav-item {
+        white-space: nowrap;
+        width: auto;
+    }
+}

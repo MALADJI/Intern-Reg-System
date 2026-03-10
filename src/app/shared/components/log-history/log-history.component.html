@@ -1,0 +1,140 @@
+<div class="log-history-container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="section-title mb-0">
+      <i class="bi bi-journal-text me-2"></i>System Activity Logs
+    </h2>
+    <button class="btn btn-outline-secondary btn-sm" (click)="loadLogs(currentPage)">
+      <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="card shadow-sm mb-4 border-0 bg-light">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label small text-muted font-weight-bold">Username</label>
+          <div class="input-group">
+            <span class="input-group-text border-0 bg-white"><i class="bi bi-person"></i></span>
+            <input type="text" class="form-control border-0" placeholder="Filter by username..."
+              [(ngModel)]="filters.username" (keyup.enter)="applyFilters()">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label small text-muted font-weight-bold">Action</label>
+          <div class="input-group">
+            <span class="input-group-text border-0 bg-white"><i class="bi bi-activity"></i></span>
+            <input type="text" class="form-control border-0" placeholder="Filter by action..."
+              [(ngModel)]="filters.action" (keyup.enter)="applyFilters()">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label small text-muted font-weight-bold">Role</label>
+          <select class="form-select border-0" [(ngModel)]="filters.role" (change)="applyFilters()">
+            <option value="">All Roles</option>
+            <option value="SUPER_ADMIN">Super Admin</option>
+            <option value="ADMIN">Admin</option>
+            <option value="SUPERVISOR">Supervisor</option>
+            <option value="INTERN">Intern</option>
+          </select>
+        </div>
+        <div class="col-md-2 d-flex align-items-end gap-2">
+          <button class="btn btn-primary w-100" (click)="applyFilters()">Apply</button>
+          <button class="btn btn-light" (click)="clearFilters()" title="Clear"><i class="bi bi-x-lg"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logs Table -->
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light">
+            <tr>
+              <th class="ps-4">Timestamp</th>
+              <th>User</th>
+              <th>Role</th>
+              <th>Action</th>
+              <th>Details</th>
+              <th class="pe-4">IP Address</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="loading">
+              <td colspan="6" class="text-center py-5">
+                <app-loading></app-loading>
+                <p class="text-muted mt-2">Fetching activity logs...</p>
+              </td>
+            </tr>
+            <tr *ngIf="!loading && logs.length === 0">
+              <td colspan="6" class="text-center py-5">
+                <div class="text-muted">
+                  <i class="bi bi-info-circle fs-2 d-block mb-3"></i>
+                  No activity logs found matching your criteria.
+                </div>
+              </td>
+            </tr>
+            <tr *ngFor="let log of logs">
+              <td class="ps-4">
+                <div class="small fw-bold">{{ log.timestamp | date:'MMM d, y' }}</div>
+                <div class="small text-muted">{{ log.timestamp | date:'HH:mm:ss' }}</div>
+              </td>
+              <td>
+                <span class="user-badge px-2 py-1 rounded small bg-light border">
+                  {{ log.username }}
+                </span>
+              </td>
+              <td>
+                <span class="badge rounded-pill px-2 py-1 small" [ngClass]="{
+                        'bg-danger text-white': log.userRole === 'SUPER_ADMIN',
+                        'bg-primary text-white': log.userRole === 'ADMIN',
+                        'bg-warning text-dark': log.userRole === 'SUPERVISOR',
+                        'bg-info text-dark': log.userRole === 'INTERN'
+                      }">
+                  {{ log.userRole }}
+                </span>
+              </td>
+              <td>
+                <div class="px-3 py-2 text-center d-inline-block w-100" [ngClass]="{
+                  'glow-success': isUserOnline(log.username),
+                  'glow-danger': !isUserOnline(log.username)
+                }">
+                  <span class="action-tag fw-bold" [ngClass]="{
+                    'text-primary': log.action.toUpperCase().includes('UPDATE')
+                  }">
+                    {{ log.action }}
+                  </span>
+                </div>
+              </td>
+              <td class="details-cell text-muted small">{{ log.details }}</td>
+              <td class="pe-4 small text-muted">{{ log.ipAddress || 'internal' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="card-footer bg-white border-0 py-3 d-flex justify-content-between align-items-center"
+      *ngIf="!loading && logs.length > 0">
+      <div class="small text-muted">
+        Showing {{ logs.length }} of {{ totalElements }} total logs
+      </div>
+      <nav>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item" [class.disabled]="currentPage === 0">
+            <button class="page-link" (click)="loadLogs(currentPage - 1)">Previous</button>
+          </li>
+          <li class="page-item" *ngFor="let p of getPages()" [class.active]="p === currentPage">
+            <button class="page-link" (click)="loadLogs(p)">{{ p + 1 }}</button>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages - 1">
+            <button class="page-link" (click)="loadLogs(currentPage + 1)">Next</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

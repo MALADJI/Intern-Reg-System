@@ -1,0 +1,177 @@
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Transparent background with blur */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.loading-content {
+    text-align: center;
+    background: transparent;
+    /* Remove white box for cleaner look */
+    padding: 2rem;
+    /* Removed shadow and border-radius since box is transparent */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: zoomIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Custom Spinner Styles */
+.spinner-wrapper {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.spinner-blade {
+    position: absolute;
+    left: 44.5%;
+    top: 37%;
+    width: 10%;
+    /* Relative width */
+    height: 25%;
+    /* Relative height */
+    border-radius: 50px;
+    background-color: #002855;
+    /* Navy Blue Base */
+    transform-origin: center 150%;
+    /* Pivot point for rotation */
+    animation: spinner-fade 1s linear infinite;
+    opacity: 0;
+    /* Invisbile by default */
+}
+
+/* Rotation and Delay for each blade (12 blades) */
+.spinner-blade:nth-child(1) {
+    transform: rotate(0deg) translate(0, -140%);
+    animation-delay: -1s;
+}
+
+.spinner-blade:nth-child(2) {
+    transform: rotate(30deg) translate(0, -140%);
+    animation-delay: -0.9167s;
+}
+
+.spinner-blade:nth-child(3) {
+    transform: rotate(60deg) translate(0, -140%);
+    animation-delay: -0.8333s;
+}
+
+.spinner-blade:nth-child(4) {
+    transform: rotate(90deg) translate(0, -140%);
+    animation-delay: -0.75s;
+}
+
+.spinner-blade:nth-child(5) {
+    transform: rotate(120deg) translate(0, -140%);
+    animation-delay: -0.6667s;
+}
+
+.spinner-blade:nth-child(6) {
+    transform: rotate(150deg) translate(0, -140%);
+    animation-delay: -0.5833s;
+}
+
+.spinner-blade:nth-child(7) {
+    transform: rotate(180deg) translate(0, -140%);
+    animation-delay: -0.5s;
+}
+
+.spinner-blade:nth-child(8) {
+    transform: rotate(210deg) translate(0, -140%);
+    animation-delay: -0.4167s;
+}
+
+.spinner-blade:nth-child(9) {
+    transform: rotate(240deg) translate(0, -140%);
+    animation-delay: -0.3333s;
+}
+
+.spinner-blade:nth-child(10) {
+    transform: rotate(270deg) translate(0, -140%);
+    animation-delay: -0.25s;
+}
+
+.spinner-blade:nth-child(11) {
+    transform: rotate(300deg) translate(0, -140%);
+    animation-delay: -0.1667s;
+}
+
+.spinner-blade:nth-child(12) {
+    transform: rotate(330deg) translate(0, -140%);
+    animation-delay: -0.0833s;
+}
+
+@keyframes spinner-fade {
+    0% {
+        opacity: 1;
+        background-color: #002855;
+        box-shadow: 0 0 15px rgba(0, 40, 85, 0.9), 0 0 30px rgba(0, 40, 85, 0.5);
+    }
+
+    100% {
+        opacity: 0.1;
+        background-color: #60a5fa;
+        box-shadow: none;
+        /* Light Blue Fade */
+    }
+}
+
+.text-navy {
+    color: #002855 !important;
+    margin-top: 1rem;
+    text-shadow: 0 0 15px rgba(0, 40, 85, 0.4);
+    animation: text-pulse 2s infinite ease-in-out;
+}
+
+@keyframes text-pulse {
+
+    0%,
+    100% {
+        text-shadow: 0 0 15px rgba(0, 40, 85, 0.4);
+    }
+
+    50% {
+        text-shadow: 0 0 25px rgba(0, 40, 85, 0.7);
+    }
+}
+
+.tracking-wide {
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,221 @@
+<div [class.container-fluid]="!isEmbedded" [class.p-0]="isEmbedded" class="py-3 py-md-4 px-2 px-md-3">
+  <div class="row g-3 g-md-4">
+    <!-- Sidebar Navigation - Hidden when embedded -->
+    <div class="col-12 col-md-3" *ngIf="!isEmbedded">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Settings</h5>
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')"
+                href="javascript:void(0)">
+                <i class="bi bi-person me-2"></i>General
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [class.active]="activeTab === 'password'" (click)="setActiveTab('password')"
+                href="javascript:void(0)">
+                <i class="bi bi-lock me-2"></i>Security
+              </a>
+            </li>
+          </ul>
+          <hr>
+          <a [routerLink]="getDashboardRoute()" [queryParams]="{section: 'overview'}"
+            class="btn btn-outline-secondary btn-sm w-100">
+            <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div [class.col-md-9]="!isEmbedded" [class.col-12]="isEmbedded">
+
+
+      <!-- Profile Tab -->
+      <div class="card shadow-sm" *ngIf="activeTab === 'profile'">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0"><i class="bi bi-person me-2"></i>Profile Information</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="profileForm" (ngSubmit)="onUpdateProfile()" novalidate>
+            <div class="row g-3">
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="name" class="form-label">
+                  First Name <span class="text-danger">*</span>
+                </label>
+                <input type="text" id="name" formControlName="name" class="form-control"
+                  [class.is-invalid]="isFieldInvalid(profileForm, 'name')"
+                  [class.is-valid]="profileForm.get('name')?.valid && profileForm.get('name')?.touched"
+                  placeholder="Enter your first name">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid(profileForm, 'name')">
+                  {{ getFieldError(profileForm, 'name') }}
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="surname" class="form-label">Surname</label>
+                <input type="text" id="surname" formControlName="surname" class="form-control"
+                  [class.is-invalid]="isFieldInvalid(profileForm, 'surname')" placeholder="Enter your surname">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid(profileForm, 'surname')">
+                  {{ getFieldError(profileForm, 'surname') }}
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label">
+                Email Address <span class="text-danger">*</span>
+              </label>
+              <input type="email" id="email" formControlName="email" class="form-control"
+                [class.is-invalid]="isFieldInvalid(profileForm, 'email')"
+                [class.is-valid]="profileForm.get('email')?.valid && profileForm.get('email')?.touched"
+                placeholder="their.email@univen.ac.za" (input)="onEmailInput($event)"
+                (keydown)="onEmailKeyDown($event)">
+              <div class="invalid-feedback" *ngIf="isFieldInvalid(profileForm, 'email')">
+                {{ getFieldError(profileForm, 'email') }}
+              </div>
+            </div>
+
+            <div class="row g-3" *ngIf="getUserRole() !== 'ADMIN'">
+              <div class="col-12 col-sm-6 mb-3" *ngIf="profileForm.get('department')?.value">
+                <label for="field" class="form-label">Field</label>
+                <input type="text" id="field" formControlName="field" class="form-control" readonly
+                  placeholder="Contact admin to change">
+                <small class="form-text text-muted">Field changes require administrator approval</small>
+              </div>
+            </div>
+
+            <!-- Intern Specific Fields -->
+            <div class="row g-3" *ngIf="getUserRole() === 'INTERN'">
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="employer" class="form-label">Employer Name</label>
+                <input type="text" id="employer" formControlName="employer" class="form-control"
+                  placeholder="Enter employer name">
+              </div>
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="idNumber" class="form-label">ID Number</label>
+                <input type="text" id="idNumber" formControlName="idNumber" class="form-control"
+                  placeholder="Enter ID number">
+              </div>
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" id="startDate" formControlName="startDate" class="form-control">
+              </div>
+              <div class="col-12 col-sm-6 mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" id="endDate" formControlName="endDate" class="form-control">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="role" class="form-label">Role</label>
+              <input type="text" id="role" class="form-control" [value]="getUserRole()" readonly>
+            </div>
+
+            <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-3">
+              <button type="button" class="btn btn-secondary w-100 w-sm-auto" [routerLink]="getDashboardRoute()">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary w-100 w-sm-auto"
+                [disabled]="profileForm.invalid || isLoading">
+                <span *ngIf="!isLoading">Update Profile</span>
+                <span *ngIf="isLoading">
+                  <span class="spinner-border spinner-border-sm me-2"></span>Updating...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Password Tab -->
+      <div class="card shadow-sm" *ngIf="activeTab === 'password'">
+        <div class="card-header bg-gold">
+          <h5 class="mb-0"><i class="bi bi-lock me-2"></i>Change Password</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" novalidate>
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label">
+                Current Password <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <input [type]="showCurrentPassword ? 'text' : 'password'" id="currentPassword"
+                  formControlName="currentPassword" class="form-control"
+                  [class.is-invalid]="isFieldInvalid(passwordForm, 'currentPassword')"
+                  placeholder="Enter your current password">
+                <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility('current')">
+                  <i class="bi" [ngClass]="showCurrentPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="isFieldInvalid(passwordForm, 'currentPassword')">
+                {{ getFieldError(passwordForm, 'currentPassword') }}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">
+                New Password <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <input [type]="showNewPassword ? 'text' : 'password'" id="newPassword" formControlName="newPassword"
+                  class="form-control" [class.is-invalid]="isFieldInvalid(passwordForm, 'newPassword')"
+                  [class.is-valid]="passwordForm.get('newPassword')?.valid && passwordForm.get('newPassword')?.touched"
+                  placeholder="Enter new password">
+                <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility('new')">
+                  <i class="bi" [ngClass]="showNewPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="isFieldInvalid(passwordForm, 'newPassword')">
+                {{ getFieldError(passwordForm, 'newPassword') }}
+              </div>
+              <!-- Password Strength Indicator -->
+              <div *ngIf="passwordForm.get('newPassword')?.value" class="mt-2">
+                <div class="progress" style="height: 5px;">
+                  <div class="progress-bar bg-{{ getPasswordStrength().color }}"
+                    [style.width.%]="(getPasswordStrength().level / 4) * 100" role="progressbar">
+                  </div>
+                </div>
+                <small class="text-{{ getPasswordStrength().color }}">
+                  Password Strength: {{ getPasswordStrength().label }}
+                </small>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">
+                Confirm New Password <span class="text-danger">*</span>
+              </label>
+              <div class="input-group">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
+                  formControlName="confirmPassword" class="form-control"
+                  [class.is-invalid]="isFieldInvalid(passwordForm, 'confirmPassword')"
+                  [class.is-valid]="passwordForm.get('confirmPassword')?.valid && passwordForm.get('confirmPassword')?.touched"
+                  placeholder="Confirm new password">
+                <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility('confirm')">
+                  <i class="bi" [ngClass]="showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="isFieldInvalid(passwordForm, 'confirmPassword')">
+                {{ getFieldError(passwordForm, 'confirmPassword') }}
+              </div>
+            </div>
+
+            <div class="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-3">
+              <button type="button" class="btn btn-secondary w-100 w-sm-auto" [routerLink]="getDashboardRoute()">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-gold w-100 w-sm-auto" [disabled]="passwordForm.invalid || isLoading">
+                <span *ngIf="!isLoading">Change Password</span>
+                <span *ngIf="isLoading">
+                  <span class="spinner-border spinner-border-sm me-2"></span>Changing...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
