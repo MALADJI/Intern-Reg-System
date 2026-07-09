@@ -470,12 +470,15 @@ public class AuthController {
                                 "Staff registration is restricted. Please contact your Administrator to have your account created."));
             }
 
-            // Secure Gate: Prevent automatic/bypassed student registration during login fallback
+            // Secure Gate: Prevent automatic/bypassed student registration during login
+            // fallback
             if (role == User.Role.INTERN && "UNIVEN".equals(verificationCode.trim())) {
-                System.out.println("⛔ SECURITY ALERT: Intern/Student registration via UNIVEN code blocked for: " + email);
+                System.out
+                        .println("⛔ SECURITY ALERT: Intern/Student registration via UNIVEN code blocked for: " + email);
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(Map.of("error", "Access Denied",
-                                "message", "Auto-registration is not allowed for students. Please register/sign up first using a verification code sent to your email."));
+                                "message",
+                                "Auto-registration is not allowed for students. Please register/sign up first using a verification code sent to your email."));
             }
 
             // Validate password strength (role-based validation)
@@ -957,7 +960,8 @@ public class AuthController {
 
             // ✅ Auto-create default supervisor if department is set and has no supervisor
             if (department != null) {
-                java.util.List<com.internregister.entity.Supervisor> deptSups = supervisorRepository.findByDepartmentId(department.getDepartmentId());
+                java.util.List<com.internregister.entity.Supervisor> deptSups = supervisorRepository
+                        .findByDepartmentId(department.getDepartmentId());
                 if (deptSups.isEmpty()) {
                     String deptCleanName = department.getName().toLowerCase().replaceAll("[^a-zA-Z0-9]", "");
                     String supervisorEmail = "supervisor_" + deptCleanName + "@univen.ac.za";
@@ -985,8 +989,8 @@ public class AuthController {
                         supervisor.setDepartment(department);
                         supervisor.setField("Software Development");
                         supervisorRepository.save(supervisor);
-                        System.out.println("✓ Auto-created default Supervisor user/profile for department: " 
-                            + department.getName() + " (Email: " + supervisorEmail + ", Password: supervisor123)");
+                        System.out.println("✓ Auto-created default Supervisor user/profile for department: "
+                                + department.getName() + " (Email: " + supervisorEmail + ", Password: supervisor123)");
                     }
                 }
             }
@@ -1322,7 +1326,8 @@ public class AuthController {
                     return null;
                 }
             } else if (studentData != null) {
-                // Students/Interns MUST register (sign up) first, they cannot be automatically provisioned on login
+                // Students/Interns MUST register (sign up) first, they cannot be automatically
+                // provisioned on login
                 System.out.println("⛔ SECURITY ALERT: Auto-provisioning BLOCKED for Student: " + username);
                 System.out.println("   Reason: Students/Interns must sign up/register first.");
                 return null;
@@ -1596,11 +1601,13 @@ public class AuthController {
             List<Double> liveDescriptor = (List<Double>) body.get("descriptor");
 
             if (email == null || email.isBlank() || liveDescriptor == null || liveDescriptor.size() != 128) {
-                return ResponseEntity.badRequest().body(Map.of("error", "email and a valid 128-dimensional descriptor are required"));
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "email and a valid 128-dimensional descriptor are required"));
             }
 
             // Fetch the intern's stored face descriptor JSON
-            Optional<com.internregister.entity.Intern> internOpt = internRepository.findByEmail(email).stream().findFirst();
+            Optional<com.internregister.entity.Intern> internOpt = internRepository.findByEmail(email).stream()
+                    .findFirst();
             if (internOpt.isEmpty()) {
                 return ResponseEntity.status(404).body(Map.of("error", "No intern profile found for this email"));
             }
@@ -1612,7 +1619,9 @@ public class AuthController {
 
             // Parse stored JSON descriptor array
             com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-            List<Double> storedDescriptor = mapper.readValue(storedFaceData, new com.fasterxml.jackson.core.type.TypeReference<List<Double>>() {});
+            List<Double> storedDescriptor = mapper.readValue(storedFaceData,
+                    new com.fasterxml.jackson.core.type.TypeReference<List<Double>>() {
+                    });
 
             // Compare using Euclidean distance
             // ── SECURITY: Threshold tightened to 0.32 (strict match required) ──────

@@ -8,6 +8,6 @@ Found 2 ADMIN users.
  - Admin: mukoni.ramulongo@univen.ac.za, Email: mukoni.ramulongo@univen.ac.za, Active: true
 Found 1 SUPERVISOR users.
  - Supervisor: supervisor@univen.ac.za, Email: supervisor@univen.ac.za
-Found 4 INTERN users.
-Total Notifications in DB: 23
+Found 2 INTERN users.
+Total Notifications in DB: 10
 =================================================
