@@ -1,0 +1,301 @@
+<div class="auth-container" [class.blur-background]="showResetModal || showHelpInfoModal">
+    <!-- Background Decorative Blobs -->
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Modern Floating Help Widget Trigger -->
+    <div class="floating-help-widget" (click)="openHelpInfoModal()">
+        <div class="help-trigger shadow-lg">
+            <i class="bi bi-question-lg"></i>
+            <div class="pulse-ring"></div>
+        </div>
+    </div>
+
+
+
+    <!-- Combined Branding and Form Section -->
+    <div class="branding-section">
+        <div class="watery-overlay"></div>
+
+        <div class="integrated-auth-wrapper">
+            <!-- Branding Content -->
+            <div class="branding-content">
+                <img src="assets/univen-logo-2.png" alt="University of Venda Logo" class="brand-logo">
+                <h1 class="brand-title">University of Venda</h1>
+                <p class="brand-slogan">Intern Register</p>
+                <div class="mt-4 d-none d-md-block">
+                    <img src="assets/welcome-back.png" alt="Welcome Back" class="hanging-logo"
+                        style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="form-container">
+                <h2 class="form-title">Welcome Back!</h2>
+                <p class="form-subtitle">Please sign in to your account</p>
+
+                <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+                    <!-- Identity/Username/Staff Number -->
+                    <div class="mb-3">
+                        <label for="loginUsername" class="form-label">Email, Username, or Staff Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input type="text" id="loginUsername" name="loginUsername" class="form-control"
+                                placeholder="Enter your identity" [(ngModel)]="loginUsername" required
+                                list="emailSuggestions" (input)="onEmailInput($event, 'login')">
+                            <datalist id="emailSuggestions">
+                                <option *ngFor="let suggestion of emailSuggestions" [value]="suggestion">
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label for="loginPassword" class="form-label mb-0">Password</label>
+                            <a href="javascript:void(0)" (click)="openResetModal()"
+                                class="text-decoration-none small fw-semibold" style="color: #2c5282;">Forgot
+                                Password?</a>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input [type]="showLoginPassword ? 'text' : 'password'" id="loginPassword"
+                                name="loginPassword" class="form-control" placeholder="••••••••"
+                                [(ngModel)]="loginPassword" required>
+                            <button type="button" class="btn btn-outline-secondary password-toggle"
+                                (click)="showLoginPassword = !showLoginPassword" tabindex="-1">
+                                <i class="bi" [ngClass]="showLoginPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-navy py-2" [disabled]="!loginForm.valid || isLoginLoading">
+                            <span *ngIf="isLoginLoading" class="spinner-border spinner-border-sm me-2"></span>
+                            {{ isLoginLoading ? 'Signing in...' : 'Sign In' }}
+                        </button>
+                    </div>
+
+                    <div class="text-center">
+                        <span class="text-muted small">Don't have an account?</span>
+                        <a routerLink="/sign-up/sign-up" class="text-decoration-none fw-bold ms-1 small"
+                            style="color: #1e3a5f;">Create an Account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- System Help Info Modal -->
+<div class="modal fade shadow-lg" [class.show]="showHelpInfoModal"
+    [style.display]="showHelpInfoModal ? 'block' : 'none'" tabindex="-1" role="dialog"
+    style="z-index: 10001; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);" (click)="closeHelpInfoModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; overflow: hidden;">
+            <!-- Modal Header -->
+            <div class="modal-header-custom p-3 px-4 text-white d-flex justify-content-between align-items-center"
+                style="background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);">
+                <div class="d-flex align-items-center">
+                    <div class="help-icon-badge me-3 shadow-sm"
+                        style="background: rgba(255,255,255,0.2); border-radius: 12px; padding: 8px;">
+                        <i class="bi bi-info-circle-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">System Help</h6>
+                        <small class="opacity-75" style="font-size: 0.75rem;">Univen Intern Register</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" (click)="closeHelpInfoModal()"></button>
+            </div>
+
+            <div class="modal-body p-3 px-4" style="max-height: 400px; overflow-y: auto;">
+                <!-- About Section -->
+                <div class="help-section mb-3">
+                    <p class="help-text" style="font-size: 0.85rem; line-height: 1.5; color: #4a5568;">{{
+                        helpSettings.about }}</p>
+                </div>
+
+                <div class="help-divider mb-3" style="height: 1px; background: #edf2f7;"></div>
+
+                <!-- Quick Guide Steps -->
+                <div class="help-section mb-3">
+                    <h6 class="help-header mb-2 fw-bold" style="color: #1e3a5f; font-size: 0.9rem;">
+                        <i class="bi bi-lightning-charge-fill me-2 text-warning"></i>Quick Start
+                    </h6>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="quick-step d-flex align-items-center gap-3">
+                            <span class="step-badge d-flex align-items-center justify-content-center"
+                                style="min-width: 24px; height: 24px; background: #e2e8f0; border-radius: 50%; font-size: 0.75rem; font-weight: 700; color: #1e3a5f;">1</span>
+                            <span class="text-secondary small" style="font-size: 0.8rem;">Login with your staff/student
+                                number or email</span>
+                        </div>
+                        <div class="quick-step d-flex align-items-center gap-3">
+                            <span class="step-badge d-flex align-items-center justify-content-center"
+                                style="min-width: 24px; height: 24px; background: #e2e8f0; border-radius: 50%; font-size: 0.75rem; font-weight: 700; color: #1e3a5f;">2</span>
+                            <span class="text-secondary small" style="font-size: 0.8rem;">Allow GPS location when
+                                prompted</span>
+                        </div>
+                        <div class="quick-step d-flex align-items-center gap-3">
+                            <span class="step-badge d-flex align-items-center justify-content-center"
+                                style="min-width: 24px; height: 24px; background: #e2e8f0; border-radius: 50%; font-size: 0.75rem; font-weight: 700; color: #1e3a5f;">3</span>
+                            <span class="text-secondary small" style="font-size: 0.8rem;">Draw your signature to clock
+                                in/out</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-divider mb-3" style="height: 1px; background: #edf2f7;"></div>
+
+                <!-- Contact Section -->
+                <div class="help-section">
+                    <h6 class="help-header mb-2 fw-bold" style="color: #1e3a5f; font-size: 0.9rem;">
+                        <i class="bi bi-headset me-2 text-primary"></i>Contact Support
+                    </h6>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="help-contact-row d-flex align-items-center p-2 rounded-3"
+                            style="background: #f8fafc;">
+                            <i class="bi bi-telephone text-primary me-3 fs-6"></i>
+                            <div class="contact-details">
+                                <span class="label text-muted"
+                                    style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase;">Call</span>
+                                <span class="value fw-bold" style="color: #1e3a5f; font-size: 0.8rem;">{{
+                                    helpSettings.phone }}</span>
+                            </div>
+                        </div>
+                        <div class="help-contact-row d-flex align-items-center p-2 rounded-3"
+                            style="background: #f8fafc;">
+                            <i class="bi bi-envelope-at text-primary me-3 fs-6"></i>
+                            <div class="contact-details">
+                                <span class="label text-muted"
+                                    style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase;">Email</span>
+                                <span class="value fw-bold" style="color: #1e3a5f; font-size: 0.8rem;">{{
+                                    helpSettings.email }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer with Full Guide Button -->
+            <div class="modal-footer p-3 px-4 bg-light border-0">
+                <button type="button"
+                    class="btn btn-navy w-100 py-2 rounded-3 shadow-sm d-flex align-items-center justify-content-center gap-2"
+                    (click)="toggleHelpModal(); closeHelpInfoModal()" style="font-size: 0.85rem;">
+                    <i class="bi bi-book-half"></i>
+                    View Full User Guide
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Password Reset Modal -->
+<div class="modal fade" [class.show]="showResetModal" [style.display]="showResetModal ? 'block' : 'none'"
+    id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" [attr.aria-hidden]="!showResetModal"
+    [style.background-color]="showResetModal ? 'rgba(0,0,0,0.5)' : 'transparent'" (click)="closeResetModal()">
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-semibold" id="resetPasswordModalLabel">Reset Password</h5>
+                <button type="button" class="btn-close" (click)="closeResetModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="resetForm" (ngSubmit)="isResetCodeSent ? resetPassword() : sendResetCode()"
+                    novalidate>
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="resetEmail" class="form-label text-dark fw-medium">
+                            Email Address <span class="text-danger">*</span>
+                        </label>
+                        <input type="email" id="resetEmail" formControlName="email" class="form-control"
+                            placeholder="yourname@univen.ac.za" [readonly]="isResetCodeSent"
+                            (input)="onEmailInput($event, 'reset')">
+                    </div>
+
+                    <!-- Verification Code (shown after code is sent) -->
+                    <div class="mb-3" *ngIf="isResetCodeSent">
+                        <label for="verificationCode" class="form-label text-dark fw-medium">
+                            Verification Code <span class="text-danger">*</span>
+                        </label>
+                        <div *ngIf="resetVerificationCode" class="alert alert-info mb-2"
+                            style="background-color: #e7f3ff; border: 1px solid #b3d9ff;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted d-block mb-1">Your verification code:</small>
+                                    <strong class="blurry-text"
+                                        style="font-size: 18px; color: #26406e; letter-spacing: 2px;">{{
+                                        resetVerificationCode }}</strong>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button *ngIf="resetCountdown > 0" type="button"
+                                        class="btn btn-sm btn-outline-primary shadow-sm"
+                                        (click)="copyCode(resetVerificationCode)">
+                                        <i class="bi bi-clipboard me-1"></i>Copy
+                                    </button>
+                                    <button *ngIf="resetCountdown <= 0" type="button"
+                                        class="btn btn-sm btn-primary shadow-sm" (click)="sendResetCode()">
+                                        <i class="bi bi-arrow-clockwise me-1"></i>Resend
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="verificationCode" formControlName="verificationCode"
+                                class="form-control" placeholder="Enter 6-digit code" maxlength="6">
+                        </div>
+                        <small class="text-muted" *ngIf="resetCountdown > 0">Resend code in {{ resetCountdown
+                            }}s</small>
+                    </div>
+
+                    <!-- New Password (shown after code is sent) -->
+                    <div class="mb-3" *ngIf="isResetCodeSent">
+                        <label for="resetPassword" class="form-label text-dark fw-medium">
+                            New Password <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <input [type]="showResetPassword ? 'text' : 'password'" id="resetPassword"
+                                formControlName="password" class="form-control" placeholder="Create a strong password">
+                            <button type="button" class="btn btn-outline-secondary"
+                                (click)="showResetPassword = !showResetPassword">
+                                <i class="bi" [ngClass]="showResetPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password (shown after code is sent) -->
+                    <div class="mb-3" *ngIf="isResetCodeSent">
+                        <label for="resetConfirmPassword" class="form-label text-dark fw-medium">
+                            Confirm Password <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <input [type]="showResetConfirmPassword ? 'text' : 'password'" id="resetConfirmPassword"
+                                formControlName="confirmPassword" class="form-control"
+                                placeholder="Re-enter your password">
+                            <button type="button" class="btn btn-outline-secondary"
+                                (click)="showResetConfirmPassword = !showResetConfirmPassword">
+                                <i class="bi" [ngClass]="showResetConfirmPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-navy w-100 fw-bold"
+                            [disabled]="isResetCodeSent ? resetForm.invalid : resetForm.get('email')?.invalid">
+                            <span *ngIf="!isResetCodeSent">Send Verification Code</span>
+                            <span *ngIf="isResetCodeSent">Reset Password</span>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary w-100" (click)="closeResetModal()">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

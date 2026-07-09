@@ -1,0 +1,1167 @@
+:root {
+  /* University of Venda Brand Colors */
+  --univen-navy: #1e3a5f;
+  --univen-blue: #2c5282;
+  --univen-dark-navy: #1a2f4d;
+  --univen-gold: #D4AF37;
+  --univen-gold-bright: #F1C40F;
+  --univen-gold-hover: #AA8C2C;
+  --univen-navy-gradient: linear-gradient(135deg, var(--univen-navy) 0%, var(--univen-blue) 100%);
+
+  /* ===================== GLOBAL UTILITY CLASSES (NAVY-GOLD THEME) ===================== */
+  .text-navy {
+    color: var(--univen-navy) !important;
+  }
+
+  .text-blue {
+    color: var(--univen-blue) !important;
+  }
+
+  .text-gold {
+    color: var(--univen-gold) !important;
+  }
+
+  .bg-navy {
+    background-color: var(--univen-navy) !important;
+    color: white !important;
+  }
+
+  .bg-navy-subtle {
+    background-color: rgba(30, 58, 95, 0.1) !important;
+    color: var(--univen-navy) !important;
+  }
+
+  .bg-blue {
+    background-color: var(--univen-blue) !important;
+    color: white !important;
+  }
+
+  .bg-blue-subtle {
+    background-color: rgba(44, 82, 130, 0.1) !important;
+    color: var(--univen-blue) !important;
+  }
+
+  .bg-gold {
+    background-color: var(--univen-gold) !important;
+    color: white !important;
+  }
+
+  .bg-gold-subtle {
+    background-color: rgba(212, 175, 55, 0.1) !important;
+    color: var(--univen-gold) !important;
+  }
+
+  /* 3. GOLD (Warning/Action) */
+  .btn-gold {
+    background: linear-gradient(135deg, var(--univen-gold) 0%, var(--univen-gold-bright) 100%) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.6rem 1.25rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-gold:hover:not(:disabled) {
+    background: var(--univen-gold-hover) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .btn-navy {
+    background: var(--univen-navy-gradient) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 0.6rem 1.25rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-navy:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--univen-blue) 0%, var(--univen-navy) 100%) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .btn-outline-navy {
+    border: 2px solid var(--univen-navy) !important;
+    color: var(--univen-navy) !important;
+    background: transparent !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-outline-navy:hover:not(:disabled) {
+    background: rgba(30, 58, 95, 0.08) !important;
+    color: var(--univen-navy) !important;
+  }
+
+  .btn-outline-gold {
+    border: 2px solid var(--univen-gold) !important;
+    color: var(--univen-gold) !important;
+    background: transparent !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-outline-gold:hover:not(:disabled) {
+    background: rgba(212, 175, 55, 0.08) !important;
+    color: var(--univen-gold) !important;
+  }
+
+  --sidebar-dark: #021735;
+  --sidebar-light: #26406e;
+  --sidebar-gradient: linear-gradient(90deg, var(--sidebar-dark), var(--sidebar-light));
+
+  /* Sidebar Widths */
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 70px;
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --sidebar-width: 280px;
+    --sidebar-collapsed-width: 80px;
+  }
+}
+
+@media (min-width: 2560px) {
+  :root {
+    --sidebar-width: 300px;
+  }
+
+  /* Glassmorphism Utilities */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07) !important;
+  }
+}
+
+html {
+  font-size: 92% !important; /* Global compact scaling */
+}
+
+html,
+body {
+  background-color: whitesmoke !important;
+  scroll-behavior: smooth !important;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none !important;
+}
+
+/* ===================== PREMIUM BACKGROUND (FACIAL RECOGNITION STYLE) ===================== */
+.premium-bg {
+  background: #f8f9fa !important;
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 100vh !important;
+}
+
+.premium-bg::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -100px !important;
+  left: -100px !important;
+  right: -100px !important;
+  bottom: -100px !important;
+  background: radial-gradient(circle at 10% 10%, rgba(30, 58, 95, 0.12) 0%, transparent 40%),
+              radial-gradient(circle at 90% 90%, rgba(212, 175, 55, 0.12) 0%, transparent 40%),
+              radial-gradient(circle at 50% 50%, rgba(30, 58, 95, 0.05) 0%, transparent 60%) !important;
+  filter: blur(80px) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+.card {
+  border-radius: 16px !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  background: #ffffff;
+}
+
+.card:hover {
+  box-shadow: 0 12px 30px rgba(30, 58, 95, 0.08) !important;
+  transform: translateY(-4px);
+}
+
+.card-body {
+  padding: 1rem !important; /* Compact padding */
+}
+
+.row.g-3, .row.g-4 {
+  --bs-gutter-y: 0.75rem !important; /* Tighter vertical spacing */
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+/* ===================== MODERN TABLE SYSTEM ===================== */
+.modern-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+  margin-bottom: 0 !important;
+}
+
+.modern-table thead th {
+  background-color: #f8f9fa !important;
+  color: var(--univen-navy) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 1px !important;
+  padding: 1rem 0.75rem !important;
+  border-top: none !important;
+  border-bottom: 2px solid rgba(30, 58, 95, 0.08) !important;
+}
+
+.modern-table tbody tr {
+  transition: all 0.2s ease !important;
+}
+
+.modern-table tbody tr:hover {
+  background-color: rgba(30, 58, 95, 0.02) !important;
+  transform: scale(1.001);
+  box-shadow: inset 4px 0 0 var(--univen-blue);
+}
+
+.modern-table td {
+  padding: 0.75rem !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+  color: #4a5568 !important;
+  font-size: 0.825rem !important;
+}
+
+/* Modern Status Badges */
+.status-badge {
+  padding: 0.45rem 1rem !important;
+  font-weight: 700 !important;
+  font-size: 0.65rem !important;
+  border-radius: 50px !important;
+  letter-spacing: 0.8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.status-badge-success {
+  background-color: #e6fffa !important;
+  color: #2c7a7b !important;
+  border: 1px solid rgba(44, 122, 123, 0.2) !important;
+}
+
+.status-badge-info {
+  background-color: #ebf8ff !important;
+  color: #2b6cb0 !important;
+  border: 1px solid rgba(43, 108, 176, 0.2) !important;
+}
+
+.status-badge-warning {
+  background-color: #fffaf0 !important;
+  color: #9c4221 !important;
+  border: 1px solid rgba(156, 66, 33, 0.2) !important;
+}
+
+.status-badge-secondary {
+  background-color: #f7fafc !important;
+  color: #4a5568 !important;
+  border: 1px solid rgba(74, 85, 104, 0.2) !important;
+}
+
+/* ===================== GLOBAL FORM STYLES (LOGIN THEME) ===================== */
+.form-label {
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  margin-bottom: 0.25rem !important;
+  display: block !important;
+}
+
+.form-control,
+.form-select {
+  border: 2px solid #e0e0e0 !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.85rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--univen-blue) !important;
+  box-shadow: 0 0 0 0.2rem rgba(44, 82, 130, 0.15) !important;
+  outline: none !important;
+}
+
+/* ===================== GLOBAL BUTTON STYLES (3-COLOR TRADITION) ===================== */
+/* 1. NAVY (Primary) */
+.btn-primary {
+  background: var(--univen-navy-gradient) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0.6rem 1.25rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--univen-blue) 0%, var(--univen-navy) 100%) !important;
+  box-shadow: 0 6px 18px rgba(30, 58, 95, 0.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 2. BLUE (Secondary/Outline) */
+.btn-outline-primary {
+  border: 2px solid var(--univen-blue) !important;
+  color: var(--univen-blue) !important;
+  background: transparent !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-outline-primary:hover:not(:disabled) {
+  background: rgba(44, 82, 130, 0.08) !important;
+  border-color: var(--univen-navy) !important;
+  color: var(--univen-navy) !important;
+}
+
+/* 3. GOLD (Accent/Special) */
+.btn-gold {
+  background: linear-gradient(135deg, var(--univen-gold) 0%, var(--univen-gold-bright) 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: white !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25) !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-gold:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--univen-gold-hover) 0%, var(--univen-gold) 100%) !important;
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.35) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Neutrals/Utilities */
+.btn-outline-secondary {
+  border: 2px solid #e0e0e0 !important;
+  color: #6c757d !important;
+  border-radius: 8px !important;
+}
+
+.btn-outline-secondary:hover {
+  background: #f8f9fa !important;
+  border-color: #cbd5e0 !important;
+  color: var(--univen-navy) !important;
+}
+
+/* Header Utilities */
+.bg-navy {
+  background: var(--univen-navy-gradient) !important;
+}
+
+.bg-gold {
+  background: linear-gradient(135deg, var(--univen-gold) 0%, var(--univen-gold-bright) 100%) !important;
+}
+
+/* ===================== SWEETALERT2 SAFARI COMPATIBILITY ===================== */
+/* Fix for Safari user-select compatibility */
+div:where(.swal2-icon),
+.swal2-icon {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* ===================== CSS COMPATIBILITY FIXES ===================== */
+/* Fix for text-size-adjust compatibility */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Fix for text-align match-parent compatibility */
+th {
+  text-align: -webkit-match-parent;
+  text-align: match-parent;
+}
+
+/* Visually hidden class for screen readers */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ===================== GLOBAL USER FULLNAME (CLEAN) ===================== */
+.user-fullname {
+  color: var(--univen-navy);
+  font-weight: 700;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  text-decoration: none !important;
+}
+
+/* ===================== SWEETALERT2 CUSTOM THEME ===================== */
+/* ===================== SWEETALERT2 CUSTOM THEME ===================== */
+/* Popup Container */
+div:where(.swal2-container) div:where(.swal2-popup) {
+  border-radius: 16px !important;
+  padding: 1.25rem !important;
+  width: 22em !important;
+  /* Smaller width */
+  background: #ffffff !important;
+  box-shadow: 0 15px 50px rgba(2, 23, 53, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  /* Removed backdrop-filter to prevent potential interaction issues */
+  animation: none !important;
+  /* Explicitly disable animation */
+  transition: none !important;
+  /* Explicitly disable transition */
+}
+
+/* Title */
+div:where(.swal2-container) h2:where(.swal2-title) {
+  color: var(--univen-navy) !important;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 1.4rem !important;
+  /* Smaller title */
+  margin-bottom: 0.5rem !important;
+}
+
+/* Content/Text */
+div:where(.swal2-container) div:where(.swal2-html-container) {
+  color: #6c757d !important;
+  font-size: 0.9rem !important;
+  /* Smaller text */
+  line-height: 1.5 !important;
+  margin: 0 0 1rem 0 !important;
+  text-align: center !important;
+}
+
+/* Confirm Button */
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+  background: var(--univen-navy-gradient) !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  /* Smaller button text */
+  padding: 0.6rem 1.5rem !important;
+  /* Smaller button padding */
+  box-shadow: 0 4px 15px rgba(2, 23, 53, 0.3) !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(2, 23, 53, 0.4) !important;
+  background: linear-gradient(135deg, var(--univen-blue) 0%, var(--univen-navy) 100%) !important;
+}
+
+/* Cancel Button */
+div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
+  background: #f8f9fa !important;
+  color: #6c757d !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  padding: 0.6rem 1.5rem !important;
+  border: 1px solid #dee2e6 !important;
+  transition: all 0.3s ease !important;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel:hover {
+  background: #e9ecef !important;
+  color: #495057 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Icons */
+div:where(.swal2-icon) {
+  border-width: 2px !important;
+  /* Thinner border */
+  transform: scale(0.8) !important;
+  /* Smaller icon */
+  margin-bottom: 0.5rem !important;
+  margin-top: 0.5rem !important;
+}
+
+/* Success Icon */
+div:where(.swal2-icon).swal2-success {
+  border-color: #28a745 !important;
+  color: #28a745 !important;
+}
+
+div:where(.swal2-icon).swal2-success [class^='swal2-success-line'] {
+  background-color: #28a745 !important;
+}
+
+div:where(.swal2-icon).swal2-success .swal2-success-ring {
+  border: 2px solid rgba(40, 167, 69, 0.2) !important;
+}
+
+/* Error Icon */
+div:where(.swal2-icon).swal2-error {
+  border-color: #dc3545 !important;
+  color: #dc3545 !important;
+}
+
+div:where(.swal2-icon).swal2-error [class^='swal2-x-mark-line'] {
+  background-color: #dc3545 !important;
+}
+
+/* Warning Icon */
+div:where(.swal2-icon).swal2-warning {
+  border-color: #ffc107 !important;
+  color: #ffc107 !important;
+}
+
+/* Info Icon */
+div:where(.swal2-icon).swal2-info {
+  border-color: #17a2b8 !important;
+  color: #17a2b8 !important;
+}
+
+/* Explicitly remove animations */
+div:where(.swal2-container.swal2-center>.swal2-popup) {
+  animation: none !important;
+}
+
+/* ===================== GLOBAL USER BADGES ===================== */
+.badge-container {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.role-badge {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 0.55rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.dept-badge {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 0.55rem;
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  letter-spacing: 0.2px;
+}
+
+/* ===================== GLOBAL ANIMATIONS ===================== */
+@keyframes slideInRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.section-animate {
+  animation: slideInRight 0.6s ease-out forwards;
+}
+
+/* Sidebar Footer Section (Bottom of Sidebar) */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 5;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-footer {
+  padding: 0.75rem 0.25rem;
+}
+
+/* Sidebar Clock Section inside footer */
+.clock-section {
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.sidebar-clock-time {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #D4AF37;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+.sidebar-clock-time-short {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #D4AF37;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-clock-date {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-footer .user-avatar-circle {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+
+.sidebar-footer .user-info-sidebar h6 {
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+
+.sidebar-footer .user-info-sidebar small.smaller {
+  font-size: 0.65rem;
+  opacity: 0.8;
+}
+
+/* Sidebar User Profile Container Style */
+.sidebar-user-profile {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+}
+
+.sidebar-user-profile:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 175, 55, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-user-profile-collapsed {
+  transition: all 0.3s ease;
+}
+
+.sidebar-user-profile-collapsed:hover i {
+  color: var(--univen-gold) !important;
+  transform: scale(1.2);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+/* ===================== RESPONSIVE OPTIMIZATIONS FOR 1920x1080 ===================== */
+@media (min-width: 1920px) {
+
+  /* Optimize SweetAlert2 for larger screens */
+  div:where(.swal2-container) div:where(.swal2-popup) {
+    width: 26em !important;
+    padding: 1.5rem !important;
+  }
+
+  div:where(.swal2-container) h2:where(.swal2-title) {
+    font-size: 1.6rem !important;
+  }
+
+  div:where(.swal2-container) div:where(.swal2-html-container) {
+    font-size: 1rem !important;
+  }
+
+  div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm,
+  div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
+    font-size: 0.95rem !important;
+    padding: 0.7rem 1.75rem !important;
+  }
+
+  div:where(.swal2-icon) {
+    transform: scale(0.9) !important;
+  }
+
+  /* Optimize badges for larger screens */
+  .role-badge,
+  .dept-badge {
+    font-size: 0.65rem;
+    padding: 3px 10px;
+  }
+
+  /* Enhance sidebar clock for larger displays */
+  .sidebar-clock-time {
+    font-size: 1.25rem;
+  }
+
+  .sidebar-clock-date {
+    font-size: 0.75rem;
+  }
+}
+
+/* ===================== COMPACT MAIN CONTENT OPTIMIZATION ===================== */
+/* Scales down oversized text, cards, and tables strictly in the main view area */
+.main-content {
+  font-size: 0.85rem !important; 
+}
+
+/* Scale down headings */
+.main-content h1, .main-content .fs-1 { font-size: 1.75rem !important; }
+.main-content h2, .main-content .fs-2 { font-size: 1.5rem !important; }
+.main-content h3, .main-content .fs-3 { font-size: 1.25rem !important; }
+.main-content h4, .main-content .fs-4 { font-size: 1.1rem !important; }
+.main-content h5, .main-content .fs-5 { font-size: 1rem !important; font-weight: 600; }
+.main-content h6, .main-content .fs-6 { font-size: 0.85rem !important; }
+.main-content .stat-value { font-size: 1.5rem !important; }
+
+/* Shrink heavy paddings on cards & containers */
+.main-content .p-5 { padding: 1.5rem !important; }
+.main-content .p-4 { padding: 1rem !important; }
+.main-content .p-3 { padding: 0.85rem !important; }
+.main-content .py-5 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+.main-content .py-4 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+.main-content .py-3 { padding-top: 0.85rem !important; padding-bottom: 0.85rem !important; }
+.main-content .px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+.main-content .mb-5 { margin-bottom: 1.5rem !important; }
+.main-content .mb-4 { margin-bottom: 1rem !important; }
+.main-content .mb-3 { margin-bottom: 0.85rem !important; }
+
+/* Shrink Table Proportions */
+.main-content .table td, .main-content .modern-table td {
+  padding: 0.6rem 0.85rem !important;
+  font-size: 0.8rem !important;
+}
+
+.main-content .table th, .main-content .modern-table thead th {
+  padding: 0.75rem 0.85rem !important;
+  font-size: 0.7rem !important;
+}
+
+/* UI Elements scaling */
+.main-content .btn:not(.btn-sm):not(.btn-lg) {
+  padding: 0.4rem 1rem !important;
+  font-size: 0.8rem !important;
+}
+
+.main-content .badge {
+  padding: 0.35rem 0.65rem !important;
+  font-size: 0.7rem !important;
+}
+
+.main-content .user-avatar {
+  width: 45px !important;
+  height: 45px !important;
+}
+
+.main-content .fs-1.bi, .main-content i.fs-1 { font-size: 1.5rem !important; }
+
+/* Premium Aesthetic Refinements */
+.main-content .card-header {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+.main-content .card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+.main-content .card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.main-content .overview-stat-card {
+  border-radius: 12px !important;
+}
+
+.main-content .modern-table thead th {
+  background-color: #f8f9fa !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6c757d;
+}
+
+/* ===================== RESPONSIVE OPTIMIZATIONS FOR SMARTPHONES (<576px) ===================== */
+@media (max-width: 576px) {
+
+  /* Ensure SweetAlert modals fit within small screens */
+  div:where(.swal2-container) div:where(.swal2-popup) {
+    width: 90% !important;
+    padding: 1rem !important;
+  }
+
+  /* Make sure global cards don't have excessive padding */
+  .card {
+    border-radius: 16px !important;
+  }
+
+  /* Adjust global buttons */
+  .btn-primary,
+  .btn-navy,
+  .btn-gold,
+  .btn-outline-navy,
+  .btn-outline-gold {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Status Badges */
+  .status-badge {
+    padding: 0.3rem 0.6rem !important;
+    font-size: 0.65rem !important;
+  }
+
+  /* Small form controls */
+  .form-control,
+  .form-select {
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.6rem !important;
+  }
+
+  /* Fix overflowing long usernames */
+  .user-fullname {
+    padding: 4px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Ensure canvas for signatures scales down gracefully */
+  canvas {
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 150px;
+  }
+
+  /* Make tables more compact on small screens */
+  .table {
+    font-size: 0.75rem !important;
+  }
+
+  .table td,
+  .table th {
+    padding: 0.4rem !important;
+  }
+
+  /* Improve mobile section bar rendering */
+  .mobile-section-btn {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 0.5rem !important;
+  }
+}
+
+/* ===================== NAVIGATION ALERT INDICATORS ===================== */
+.nav-link {
+  position: relative;
+}
+
+.nav-indicator-pulse {
+  position: absolute;
+  top: 12px;
+  left: 28px; /* Adjusted to be near the icon */
+  width: 8px;
+  height: 8px;
+  background-color: #ff4757;
+  border-radius: 50%;
+  box-shadow: 0 0 0 rgba(255, 71, 87, 0.4);
+  animation: pulse-red 2s infinite;
+  z-index: 5;
+  border: 1.5px solid var(--univen-navy); /* Match sidebar background */
+}
+
+@keyframes pulse-red {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(255, 71, 87, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
+  }
+}
+
+/* =====================================================================
+   COMPREHENSIVE RESPONSIVE SYSTEM
+   - Mobile phones:  ≤480px (xs), ≤576px (sm)
+   - Tablets:        577px – 991px (md)
+   - Laptops:        992px – 1366px (lg)
+   ===================================================================== */
+
+/* ---------- LAPTOP (992px – 1366px) ---------- */
+@media (min-width: 992px) and (max-width: 1366px) {
+  html { font-size: 89% !important; }
+
+  .main-content {
+    font-size: 0.82rem !important;
+  }
+
+  .main-content h3, .main-content .fs-3 { font-size: 1.15rem !important; }
+  .main-content h4, .main-content .fs-4 { font-size: 1rem !important; }
+  .main-content h5, .main-content .fs-5 { font-size: 0.92rem !important; }
+
+  .main-content .p-4 { padding: 0.85rem !important; }
+  .main-content .p-5 { padding: 1.25rem !important; }
+
+  .main-content .card-body { padding: 0.85rem !important; }
+
+  .modern-table td { font-size: 0.77rem !important; }
+}
+
+/* ---------- TABLET (577px – 991px) ---------- */
+@media (min-width: 577px) and (max-width: 991px) {
+  html { font-size: 87% !important; }
+
+  /* Dashboard layouts */
+  .dashboard-wrapper {
+    padding-top: 0 !important;
+  }
+
+  .main-content,
+  .main-content.sidebar-expanded,
+  .main-content.sidebar-collapsed {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Tighter card paddings */
+  .card-body { padding: 0.85rem !important; }
+  .main-content .p-4 { padding: 0.75rem !important; }
+  .main-content .p-5 { padding: 1rem !important; }
+
+  /* Tables */
+  .table-responsive { -webkit-overflow-scrolling: touch; }
+  .modern-table td { font-size: 0.78rem !important; padding: 0.55rem 0.6rem !important; }
+  .modern-table thead th { font-size: 0.63rem !important; padding: 0.6rem !important; }
+
+  /* Tightened grid gaps */
+  .row.g-4 { --bs-gutter-y: 0.6rem !important; }
+
+  /* Status badges */
+  .status-badge {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.6rem !important;
+  }
+
+  /* Buttons */
+  .btn:not(.btn-sm):not(.btn-lg) {
+    padding: 0.38rem 0.85rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Notification dropdown — stay on screen */
+  .notification-dropdown {
+    width: calc(100vw - 32px) !important;
+    right: -60px !important;
+    max-width: 380px !important;
+  }
+
+  /* Modal widths */
+  .modal-dialog { max-width: 94vw !important; }
+
+  /* SweetAlert */
+  div:where(.swal2-container) div:where(.swal2-popup) {
+    width: 88% !important;
+  }
+}
+
+/* ---------- SMALL PHONE (≤576px) — supplement existing rules ---------- */
+@media (max-width: 576px) {
+  html { font-size: 85% !important; }
+
+  /* Full-width main content regardless of sidebar state */
+  .main-content,
+  .main-content.sidebar-expanded,
+  .main-content.sidebar-collapsed {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  /* Cards */
+  .card { border-radius: 10px !important; }
+  .card-body { padding: 0.75rem !important; }
+  .main-content .p-4 { padding: 0.65rem !important; }
+  .main-content .p-5 { padding: 0.9rem !important; }
+
+  /* Headings */
+  .main-content h3 { font-size: 1.05rem !important; }
+  .main-content h4 { font-size: 0.95rem !important; }
+  .main-content h5 { font-size: 0.88rem !important; }
+  .main-content h2 { font-size: 1.2rem !important; }
+
+  /* Table — horizontal scroll */
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    border-radius: 8px !important;
+  }
+  .modern-table td {
+    font-size: 0.73rem !important;
+    padding: 0.45rem 0.5rem !important;
+    white-space: nowrap !important;
+  }
+  .modern-table thead th {
+    font-size: 0.58rem !important;
+    padding: 0.5rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Grid — stack all cols on phones */
+  .row.g-4, .row.g-3 {
+    --bs-gutter-x: 0.5rem !important;
+    --bs-gutter-y: 0.5rem !important;
+  }
+
+  /* Modals */
+  .modal-dialog {
+    margin: 0.5rem auto !important;
+    max-width: 96vw !important;
+  }
+  .modal-body { padding: 1rem !important; max-height: 70vh !important; }
+  .modal-footer { padding: 0.75rem 1rem !important; }
+
+  /* Buttons */
+  .btn:not(.btn-sm):not(.btn-lg) {
+    padding: 0.38rem 0.75rem !important;
+    font-size: 0.78rem !important;
+  }
+  .btn-group .btn { padding: 0.32rem 0.55rem !important; font-size: 0.75rem !important; }
+
+  /* Status badges */
+  .status-badge {
+    padding: 0.28rem 0.55rem !important;
+    font-size: 0.58rem !important;
+  }
+
+  /* Forms */
+  .form-control, .form-select {
+    font-size: 0.82rem !important;
+    padding: 0.42rem 0.6rem !important;
+  }
+  .form-label { font-size: 0.72rem !important; }
+
+  /* Notification dropdown */
+  .notification-dropdown {
+    width: calc(100vw - 24px) !important;
+    right: -110px !important;
+    max-width: none !important;
+  }
+
+  /* Pagination — shrink */
+  .pagination .page-link { padding: 0.3rem 0.55rem !important; font-size: 0.75rem !important; }
+
+  /* Flex rows → stack on phones */
+  .d-flex.flex-md-row { flex-direction: column !important; }
+}
+
+/* ---------- TINY PHONE (≤480px) ---------- */
+@media (max-width: 480px) {
+  html { font-size: 82% !important; }
+
+  .container { padding-left: 8px !important; padding-right: 8px !important; }
+
+  /* Even tighter cards */
+  .card-body { padding: 0.6rem !important; }
+
+  /* Headings */
+  .main-content h3 { font-size: 0.98rem !important; }
+  .main-content h5 { font-size: 0.82rem !important; }
+
+  /* Tables — very compact */
+  .modern-table td { font-size: 0.68rem !important; padding: 0.35rem !important; }
+  .modern-table thead th { font-size: 0.55rem !important; }
+
+  /* Action columns — icon only */
+  .btn-group .btn i { margin: 0 !important; }
+  .btn-group .btn span { display: none !important; }
+
+  /* Stat numbers */
+  .main-content .stat-value { font-size: 1.25rem !important; }
+
+  /* Modals full-screen */
+  .modal-dialog {
+    margin: 0 !important;
+    max-width: 100vw !important;
+    min-height: 100vh !important;
+  }
+  .modal-content {
+    border-radius: 0 !important;
+    min-height: 100vh !important;
+  }
+
+  /* SweetAlert */
+  div:where(.swal2-container) div:where(.swal2-popup) {
+    width: 95% !important;
+    padding: 0.9rem !important;
+  }
+}
+
+/* ---------- TOUCH-DEVICE TOUCH-TARGET SAFETY ---------- */
+@media (hover: none) and (pointer: coarse) {
+  /* Ensure all interactive elements are at least 44×44px for touch */
+  .btn, .nav-link, .page-link, .form-control, .form-select {
+    min-height: 40px !important;
+  }
+
+  /* Larger tap targets for icon-only buttons */
+  .btn-sm { min-height: 36px !important; min-width: 36px !important; }
+
+  /* Remove hover transforms that look odd on touch */
+  .card:hover { transform: none !important; }
+  .btn:hover { transform: none !important; }
+}

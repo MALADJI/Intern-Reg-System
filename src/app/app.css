@@ -1,0 +1,87 @@
+/* === Global HTTP Loading Progress Bar === */
+.global-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 99999;
+  background: rgba(13, 110, 253, 0.15);
+  overflow: hidden;
+}
+
+.global-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0d6efd, #6610f2, #0d6efd);
+  background-size: 200% 100%;
+  animation: progressSlide 1.2s linear infinite;
+  width: 100%;
+}
+
+@keyframes progressSlide {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Help Floating Action Button */
+.help-fab {
+  position: fixed;
+  bottom: 20px; /* Restored to bottom */
+  right: 20px;
+  width: 45px; /* Slightly smaller to minimize obstruction */
+  height: 45px;
+  background: linear-gradient(135deg, var(--univen-navy) 0%, #1e3a5f 100%);
+  color: white;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 8px 32px rgba(30, 58, 95, 0.2);
+  cursor: pointer;
+  z-index: 1100;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.help-fab:hover {
+  transform: scale(1.1) translateY(-5px);
+  box-shadow: 0 12px 40px rgba(30, 58, 95, 0.4);
+}
+
+.help-fab:active {
+  transform: scale(0.95);
+}
+
+/* Tooltip on hover */
+.help-tooltip {
+  position: absolute;
+  right: 55px;
+  background: var(--univen-navy);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.help-fab:hover .help-tooltip {
+  opacity: 1;
+  visibility: visible;
+  right: 50px;
+}
+
+/* Pulse animation for new users */
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 rgba(30, 58, 95, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(30, 58, 95, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(30, 58, 95, 0); }
+}
+
+.help-fab {
+  animation: pulse-glow 3s infinite;
+}

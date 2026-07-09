@@ -1,0 +1,565 @@
+<nav class="navbar navbar-expand-lg fixed-top shadow p-0" style="z-index: 1030;">
+  <!-- Left Side: Branding (Linked to Sidebar Width) -->
+  <div class="sidebar-branding d-flex align-items-center justify-content-center" [class.collapsed]="!isSidebarExpanded">
+    <div class="branding-overlay watery-overlay"></div>
+
+    <a class="navbar-brand d-flex align-items-center m-0" (click)="navigateToDashboard($event)"
+      style="cursor: pointer;">
+      <img src="assets/univen-logo-2.png" alt="University of Venda Logo" class="navbar-logo"
+        [class.expanded]="isSidebarExpanded">
+      <h6 class="mb-0 navbar-brand-text" *ngIf="isSidebarExpanded">
+        <span class="brand-text-full">Intern Register</span>
+      </h6>
+    </a>
+
+
+  </div>
+
+  <!-- User Name Display & Badges (Left Side) -->
+  <div class="user-name-display d-none d-lg-flex align-items-center px-3 gap-3">
+    <div class="user-avatar-circle">
+      <i class="bi bi-person-fill"></i>
+    </div>
+    <div class="user-info-stack">
+      <span *ngIf="user.fullName" class="user-fullname" [class.settings-active]="isProfileActive"
+        [title]="user.fullName">{{ user.fullName }}</span>
+      <div class="badge-container d-flex align-items-center gap-2">
+        <span class="role-badge" *ngIf="user.role">{{ getUserRole() }}</span>
+        <span class="dept-badge" *ngIf="user.department" [title]="user.department">{{ user.department }}</span>
+        <span class="dept-badge" *ngIf="user.field" [title]="user.field">{{ user.field }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Center: Profile Navigation Links (Visible when in profile section) -->
+  <div class="navbar-center d-none d-lg-flex align-items-center justify-content-center" *ngIf="isProfileActive">
+    <div class="centered-nav-group">
+      <button class="nav-item-btn" [class.active]="activeProfileTab === 'profile'" (click)="setProfileTab('profile')">
+        <i class="bi bi-person-fill"></i>
+        <span>General</span>
+      </button>
+      <button class="nav-item-btn" [class.active]="activeProfileTab === 'password'" (click)="setProfileTab('password')">
+        <i class="bi bi-shield-lock-fill"></i>
+        <span>Security</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Right Side: Navbar Content -->
+  <div class="navbar-content d-flex align-items-center px-3 flex-grow-1 h-100">
+    <!-- Spacer to push toggler to the right -->
+    <div class="d-lg-none me-auto"></div>
+
+    <!-- Clock and User Actions Container -->
+    <!-- Real-time Clock (Mobile/Tablet Only) -->
+    <div class="navbar-clock d-flex d-lg-none align-items-center me-2">
+      <i class="bi bi-clock me-2 clock-icon"></i>
+      <div class="clock-display">
+        <div class="clock-time">{{ currentTime | date:'HH:mm:ss' }}</div>
+        <div class="clock-date d-none d-sm-block">{{ currentTime | date:'EEE, dd MMM yyyy' }}</div>
+      </div>
+    </div>
+
+
+
+
+    <!-- Desktop Navigation Actions -->
+    <div class="ms-auto d-none d-lg-flex align-items-center gap-2">
+
+      <!-- Notification Bell -->
+      <div class="position-relative notification-container">
+        <button class="btn notification-btn" (click)="toggleNotifications($event)" title="Notifications">
+          <i class="bi bi-bell"></i>
+          <span
+            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notification-badge"
+            *ngIf="unreadCount > 0">
+            {{ unreadCount > 9 ? '9+' : unreadCount }}
+            <span class="visually-hidden">unread messages</span>
+          </span>
+        </button>
+
+        <!-- Notification Dropdown -->
+        <div class="notification-dropdown shadow-lg rounded-0" *ngIf="showNotifications">
+          <div class="notification-header d-flex justify-content-between align-items-center p-3 border-bottom">
+            <h6 class="mb-0 fw-bold text-navy">Notifications</h6>
+            <div class="d-flex gap-2">
+              <button class="btn btn-link btn-sm p-0 text-decoration-none small text-muted" (click)="markAllAsRead()"
+                *ngIf="unreadCount > 0" title="Mark all as read">
+                <i class="bi bi-check-all me-1"></i>Mark all read
+              </button>
+              <button class="btn btn-link btn-sm p-0 text-decoration-none small text-muted"
+                (click)="clearAllNotifications()" *ngIf="notifications.length > 0" title="Clear all">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="notification-body custom-scrollbar">
+            <div *ngIf="notifications.length === 0" class="text-center py-5 text-muted">
+              <i class="bi bi-bell-slash fs-1 d-block mb-2 opacity-25"></i>
+              <p class="mb-0 small">No notifications</p>
+            </div>
+
+            <div *ngFor="let notification of notifications"
+              class="notification-item p-3 border-bottom hover-bg-light cursor-pointer"
+              [class.bg-light-subtle]="!notification.read" (click)="markAsRead(notification.id, $event)">
+              <div class="d-flex gap-3">
+                <div class="notification-icon mt-1">
+                  <span class="icon-circle" [ngClass]="{
+                      'bg-primary-subtle text-primary': notification.type === 'info',
+                      'bg-success-subtle text-success': notification.type === 'success',
+                      'bg-warning-subtle text-warning': notification.type === 'warning',
+                      'bg-danger-subtle text-danger': notification.type === 'error'
+                    }">
+                    <i class="bi" [ngClass]="{
+                        'bi-info-circle-fill': notification.type === 'info',
+                        'bi-check-circle-fill': notification.type === 'success',
+                        'bi-exclamation-triangle-fill': notification.type === 'warning',
+                        'bi-exclamation-circle-fill': notification.type === 'error'
+                      }"></i>
+                  </span>
+                </div>
+                <div class="notification-content flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start mb-1">
+                    <h6 class="mb-0 small fw-semibold text-dark">{{ notification.title }}</h6>
+                    <small class="text-muted ms-2 time-text">{{ formatTime(notification.timestamp) }}</small>
+                  </div>
+                  <p class="mb-0 small text-muted lh-sm">{{ notification.message }}</p>
+                </div>
+                <div class="notification-status" *ngIf="!notification.read">
+                  <span class="status-dot bg-primary"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="notification-footer p-2 text-center border-top bg-light rounded-bottom-3">
+            <small class="text-muted">Notifications are cleared when you log out</small>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn settings-btn" (click)="navigateToProfile()"
+        [title]="getUserRole() === 'SUPER_ADMIN' ? 'System Settings' : 'Settings'" *ngIf="shouldShowSettings()">
+        <i class="bi bi-gear"></i>
+      </button>
+
+      <button class="btn logout-btn" (click)="confirmLogout()" title="Logout">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation menu"
+      title="Toggle navigation menu">
+      <i class="bi bi-list-nested fs-2 text-white"></i>
+    </button>
+  </div>
+
+  <!-- Mobile Menu Backdrop -->
+  <div class="mobile-nav-backdrop" id="navbarNavBackdrop" (click)="closeNavbar()"></div>
+
+  <!-- Mobile Navigation Menu -->
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="mobile-nav-content">
+      <!-- User Info Section -->
+      <div class="mobile-nav-user-section">
+        <div class="mobile-nav-user-avatar">
+          <i class="bi bi-person-circle"></i>
+        </div>
+        <div class="mobile-nav-user-info">
+          <div class="mobile-nav-user-name">{{ user.fullName || 'User' }}</div>
+          <div class="mobile-nav-user-email">{{ user.email || '' }}</div>
+          <div class="badge-container mt-2">
+            <span class="role-badge" *ngIf="user.role">{{ getUserRole() }}</span>
+            <span class="dept-badge" *ngIf="user.department">{{ user.department }}</span>
+            <span class="dept-badge" *ngIf="user.field">{{ user.field }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mobile-nav-divider-main"></div>
+
+      <!-- Profile Settings (Visible only when in profile section) -->
+      <ng-container *ngIf="isProfileActive">
+        <div class="mobile-nav-section-title mt-2">Profile Settings</div>
+        <ul class="mobile-nav-list mb-2">
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [class.active]="activeProfileTab === 'profile'"
+              (click)="setProfileTab('profile'); closeNavbar()" style="cursor: pointer;">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-person-fill mobile-nav-icon"></i>
+                  <span>General</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow" *ngIf="activeProfileTab !== 'profile'"></i>
+                <i class="bi bi-check-circle-fill text-success mobile-nav-arrow"
+                  *ngIf="activeProfileTab === 'profile'"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [class.active]="activeProfileTab === 'password'"
+              (click)="setProfileTab('password'); closeNavbar()" style="cursor: pointer;">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-shield-lock-fill mobile-nav-icon"></i>
+                  <span>Security</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow" *ngIf="activeProfileTab !== 'password'"></i>
+                <i class="bi bi-check-circle-fill text-success mobile-nav-arrow"
+                  *ngIf="activeProfileTab === 'password'"></i>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <div class="mobile-nav-divider-main"></div>
+      </ng-container>
+
+      <ul class="mobile-nav-list">
+        <!-- Dashboard Link - Mobile -->
+        <li class="mobile-nav-item">
+          <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'overview'}"
+            (click)="closeNavbar()">
+            <div class="mobile-nav-link-content">
+              <div class="mobile-nav-link-left">
+                <i class="bi bi-speedometer2 mobile-nav-icon"></i>
+                <span>Dashboard Home</span>
+              </div>
+              <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+            </div>
+          </a>
+        </li>
+
+        <!-- Super Admin Navigation (only visible for SUPER_ADMIN) -->
+        <ng-container *ngIf="user.role === 'SUPER_ADMIN'">
+          <li class="mobile-nav-divider"></li>
+          <li class="mobile-nav-section-title">Dashboard Sections</li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'admins'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-people-fill mobile-nav-icon"></i>
+                  <span>Manage Admins</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'departments'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-building mobile-nav-icon"></i>
+                  <span>Departments</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'logs'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-journal-text mobile-nav-icon"></i>
+                  <span>Log History</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+        </ng-container>
+
+        <!-- Admin Navigation (only visible for ADMIN) -->
+        <ng-container *ngIf="user.role === 'ADMIN'">
+          <li class="mobile-nav-divider"></li>
+          <li class="mobile-nav-section-title">Dashboard Sections</li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'Pending Approvals'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-person-plus-fill mobile-nav-icon"></i>
+                  <span>Pending Approvals</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'Manage Field'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-building mobile-nav-icon"></i>
+                  <span>Fields</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'Supervisor'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-person-badge mobile-nav-icon"></i>
+                  <span>Supervisors</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'interns'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-people-fill mobile-nav-icon"></i>
+                  <span>Interns</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()"
+              [queryParams]="{section: 'Intern Leave status'}" (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-calendar-check mobile-nav-icon"></i>
+                  <span>Leave Status</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()"
+              [queryParams]="{section: 'Attendance history'}" (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-clock-history mobile-nav-icon"></i>
+                  <span>History</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'reports'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-file-earmark-text mobile-nav-icon"></i>
+                  <span>Reports</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'Locations'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-geo-alt-fill mobile-nav-icon"></i>
+                  <span>Locations</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'logs'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-journal-text mobile-nav-icon"></i>
+                  <span>Log History</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+        </ng-container>
+
+        <!-- Supervisor Navigation (only visible for SUPERVISOR) -->
+        <ng-container *ngIf="user.role === 'SUPERVISOR'">
+          <li class="mobile-nav-divider"></li>
+          <li class="mobile-nav-section-title">Dashboard Sections</li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'Pending Approvals'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-person-plus-fill mobile-nav-icon"></i>
+                  <span>Pending Approvals</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'interns'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-people-fill mobile-nav-icon"></i>
+                  <span>Interns</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()"
+              [queryParams]="{section: 'Intern Leave status'}" (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-calendar-check mobile-nav-icon"></i>
+                  <span>Leave Status</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'history'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-clock-history mobile-nav-icon"></i>
+                  <span>History</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'reports'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-file-earmark-text mobile-nav-icon"></i>
+                  <span>Reports</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'Locations'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-geo-alt-fill mobile-nav-icon"></i>
+                  <span>Locations</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'logs'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-journal-text mobile-nav-icon"></i>
+                  <span>Log History</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+        </ng-container>
+
+        <!-- Intern Navigation (only visible for INTERN) -->
+        <ng-container *ngIf="user.role === 'INTERN'">
+          <li class="mobile-nav-divider"></li>
+          <li class="mobile-nav-section-title">Dashboard Sections</li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'signature'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-pencil-square mobile-nav-icon"></i>
+                  <span>Signature</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'leave'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-calendar2-check mobile-nav-icon"></i>
+                  <span>Leave Request</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'history'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-clock-history mobile-nav-icon"></i>
+                  <span>Attendance History</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" [routerLink]="getDashboardRoute()" [queryParams]="{section: 'logs'}"
+              (click)="closeNavbar()">
+              <div class="mobile-nav-link-content">
+                <div class="mobile-nav-link-left">
+                  <i class="bi bi-journal-text mobile-nav-icon"></i>
+                  <span>Log History</span>
+                </div>
+                <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+              </div>
+            </a>
+          </li>
+        </ng-container>
+
+        <!-- Settings Link - Mobile -->
+        <li class="mobile-nav-divider"></li>
+        <li class="mobile-nav-item" *ngIf="shouldShowSettings()">
+          <a class="mobile-nav-link" (click)="navigateToProfile(); closeNavbar()" style="cursor: pointer;">
+            <div class="mobile-nav-link-content">
+              <div class="mobile-nav-link-left">
+                <i class="bi bi-gear mobile-nav-icon"></i>
+                <span>{{ getUserRole() === 'SUPER_ADMIN' ? 'System Settings' : 'Settings' }}</span>
+              </div>
+              <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+            </div>
+          </a>
+        </li>
+
+        <!-- Logout Link - Mobile -->
+        <li class="mobile-nav-divider"></li>
+        <li class="mobile-nav-item">
+          <a class="mobile-nav-link mobile-nav-link-logout" (click)="confirmLogout()" style="cursor: pointer;">
+            <div class="mobile-nav-link-content">
+              <div class="mobile-nav-link-left">
+                <i class="bi bi-box-arrow-right mobile-nav-icon"></i>
+                <span>Logout</span>
+              </div>
+              <i class="bi bi-chevron-right mobile-nav-arrow"></i>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,437 @@
+<div class="auth-container">
+    <!-- Left Section: Branding with Watery Overlay -->
+    <div class="branding-section">
+        <div class="watery-overlay"></div>
+        <div class="branding-content">
+            <img src="assets/univen-logo-2.png" alt="University of Venda Logo" class="brand-logo">
+            <h1 class="brand-title">University of Venda</h1>
+            <p class="brand-slogan">Intern Register</p>
+            <div class="mt-4 d-none d-md-block">
+                <img src="assets/welcome-back.png" alt="Welcome Back" class="hanging-logo"
+                    style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section: Signup Form -->
+    <div class="form-section">
+        <div class="form-container-signup">
+            <!-- Univen Motto -->
+            <div class="text-center mb-3">
+                <p class="text-navy fw-semibold mb-1"
+                    style="font-size: 0.95rem; letter-spacing: 0.5px; text-transform: uppercase;">
+                    <i class="bi bi-mortarboard-fill me-2"></i>Creating Future Leaders
+                </p>
+                <div class="motto-divider mx-auto"
+                    style="width: 60px; height: 2px; background: linear-gradient(90deg, transparent, #003366, transparent);">
+                </div>
+            </div>
+
+            <h2 class="form-title">Create Account</h2>
+            <p class="form-subtitle mb-4">Join the University of Venda Intern Program</p>
+
+            <form [formGroup]="signupForm" (ngSubmit)="onSignup()" novalidate>
+                <!-- Step 1: Personal Information -->
+                <div *ngIf="currentSignupStep === 1" class="step-container">
+                    <!-- Univen Integration Toggle -->
+                    <div
+                        class="univen-toggle-container mb-2 p-2 rounded-3 border bg-light shadow-sm transition-all hover-lift">
+                        <div class="form-check form-switch d-flex align-items-center justify-content-between">
+                            <div>
+                                <label class="form-check-label fw-bold text-navy mb-0" for="univenToggle">
+                                    <i class="bi bi-mortarboard-fill me-2"></i>I am/was a Univen Student
+                                </label>
+                            </div>
+                            <input class="form-check-input ms-3" type="checkbox" id="univenToggle"
+                                [(ngModel)]="isUnivenStudent" [ngModelOptions]="{standalone: true}"
+                                (change)="updatePasswordValidity()">
+                        </div>
+
+                        <!-- Univen Fetch Fields -->
+                        <div *ngIf="isUnivenStudent" class="mt-3 animate-fade-in">
+                            <div class="row g-2">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Student Number"
+                                        [(ngModel)]="univenId" [ngModelOptions]="{standalone: true}">
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="password" class="form-control form-control-sm"
+                                        placeholder="Univen Password" [(ngModel)]="univenPassword"
+                                        [ngModelOptions]="{standalone: true}">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-navy btn-sm w-100"
+                                        (click)="fetchUnivenProfile()" [disabled]="isFetchingUniven">
+                                        <span *ngIf="!isFetchingUniven">Fetch</span>
+                                        <span *ngIf="isFetchingUniven" class="spinner-border spinner-border-sm"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- International Intern Toggle -->
+                    <div class="univen-toggle-container mb-2 p-2 rounded-3 border bg-light shadow-sm transition-all hover-lift">
+                        <div class="form-check form-switch d-flex align-items-center justify-content-between">
+                            <div>
+                                <label class="form-check-label fw-bold mb-0" for="internationalToggle" style="color: #1a6e3c;">
+                                    <i class="bi bi-globe2 me-2"></i>International Intern (Non-SA)
+                                </label>
+                                <small class="d-block text-muted" style="font-size:0.75rem; margin-top: 2px;">
+                                    I have a passport instead of a South African ID
+                                </small>
+                            </div>
+                            <input class="form-check-input ms-3" type="checkbox" id="internationalToggle"
+                                [(ngModel)]="isInternational" [ngModelOptions]="{standalone: true}"
+                                (change)="toggleInternational()">
+                        </div>
+                    </div>
+
+                    <div class="row g-2">
+                        <!-- Name, Surname, ID Number -->
+                        <div class="col-12 col-md-4">
+                            <label for="name" class="form-label">First Name <span class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white text-muted"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control form-control border-start-0 ps-0" id="name"
+                                    formControlName="name" [class.is-invalid]="isFieldInvalid('name')"
+                                    placeholder="Enter first name">
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('name')">
+                                Name is required
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="surname" class="form-label">Surname <span class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-person"></i></span>
+                                <input type="text" class="form-control form-control border-start-0 ps-0" id="surname"
+                                    formControlName="surname" [class.is-invalid]="isFieldInvalid('surname')"
+                                    placeholder="Enter surname">
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('surname')">
+                                Surname is required
+                            </div>
+                        </div>
+                        <!-- SA ID Number (local interns only) -->
+                        <div class="col-12 col-md-4" *ngIf="!isInternational">
+                            <label for="idNumber" class="form-label">ID Number <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-card-text"></i></span>
+                                <input type="text" class="form-control form-control border-start-0 ps-0" id="idNumber"
+                                    formControlName="idNumber" [class.is-invalid]="isFieldInvalid('idNumber')"
+                                    placeholder="13-digit ID" maxlength="13" (input)="onIdNumberInput($event)">
+                            </div>
+                            <div class="mt-1" *ngIf="isVerifyingId">
+                                <small class="text-primary"><span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>Verifying ID number...</small>
+                            </div>
+                            <div class="mt-1" *ngIf="idVerified && !isVerifyingId">
+                                <small class="text-success fw-bold"><i class="bi bi-patch-check-fill me-1"></i>{{ idVerificationMessage }}</small>
+                            </div>
+                            <div class="mt-1" *ngIf="idVerificationError && !isVerifyingId">
+                                <small class="text-danger fw-semibold"><i class="bi bi-exclamation-triangle-fill me-1"></i>{{ idVerificationError }}</small>
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('idNumber')">
+                                ID Number must be 13 digits
+                            </div>
+                        </div>
+
+                        <!-- Passport Number (international interns only) -->
+                        <div class="col-12 col-md-4" *ngIf="isInternational">
+                            <label for="passportNumber" class="form-label">
+                                <i class="bi bi-passport me-1"></i>Passport Number
+                                <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-globe2"></i></span>
+                                <input type="text" class="form-control form-control border-start-0 ps-0" id="passportNumber"
+                                    formControlName="passportNumber"
+                                    [class.is-invalid]="isFieldInvalid('passportNumber') || (passportError && !passportVerified)"
+                                    [class.is-valid]="passportVerified"
+                                    placeholder="e.g. AB1234567"
+                                    maxlength="20"
+                                    autocomplete="off"
+                                    (input)="onPassportInput($event)">
+                            </div>
+                            <div class="mt-1" *ngIf="passportVerified">
+                                <small class="text-success fw-bold">
+                                    <i class="bi bi-patch-check-fill me-1"></i>Passport number looks valid
+                                </small>
+                            </div>
+                            <div class="mt-1" *ngIf="passportError && !passportVerified">
+                                <small class="text-danger fw-semibold">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>{{ passportError }}
+                                </small>
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('passportNumber')">
+                                Valid passport number required (6–20 alphanumeric characters)
+                            </div>
+                            <div class="text-muted" style="font-size:0.72rem; margin-top:3px;">
+                                <i class="bi bi-info-circle me-1"></i>Letters and numbers only, 6–20 characters
+                            </div>
+                        </div>
+
+                        <!-- Role & Employer -->
+                        <div class="col-12 col-md-6 mt-2">
+                            <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-person-badge"></i></span>
+                                <select class="form-select form-select border-start-0 ps-0" id="role"
+                                    formControlName="role" [class.is-invalid]="isFieldInvalid('role')">
+                                    <option value="" disabled selected>Select role</option>
+                                    <option value="intern">Intern</option>
+                                </select>
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('role')">Role is required</div>
+                        </div>
+                        <div class="col-12 col-md-6 mt-2">
+                            <label for="employerName" class="form-label"><i
+                                    class="bi bi-building-fill me-1"></i>Employer <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-building"></i></span>
+                                <input type="text" class="form-control form-control border-start-0 ps-0"
+                                    id="employerName" formControlName="employerName"
+                                    [class.is-invalid]="isFieldInvalid('employerName')" placeholder="Employer name">
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('employerName')">
+                                Employer name is required
+                            </div>
+                        </div>
+
+                        <!-- Dates -->
+                        <div class="col-12 col-md-6 mt-2">
+                            <label for="startDate" class="form-label"><i
+                                    class="bi bi-calendar-event-fill me-1"></i>Start Date
+                                <span class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-calendar-event"></i></span>
+                                <input type="date" class="form-control form-control border-start-0 ps-0" id="startDate"
+                                    formControlName="startDate" [class.is-invalid]="isFieldInvalid('startDate')">
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('startDate')">
+                                Start date is required
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mt-2">
+                            <label for="endDate" class="form-label">End Date <span class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-calendar-check"></i></span>
+                                <input type="date" class="form-control form-control border-start-0 ps-0" id="endDate"
+                                    formControlName="endDate" [class.is-invalid]="isFieldInvalid('endDate')"
+                                    [min]="getMinEndDate()">
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('endDate')">
+                                End date must be after start date
+                            </div>
+                        </div>
+
+                        <!-- Contract Agreement Upload -->
+                        <div class="col-12 mt-2">
+                            <label for="contractFile" class="form-label"><i
+                                    class="bi bi-file-earmark-pdf-fill me-1"></i>Contract Agreement <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-file-earmark-arrow-up"></i></span>
+                                <input type="file" class="form-control border-start-0 ps-0" id="contractFile"
+                                    (change)="onContractFileChange($event)" accept=".pdf,.png,.jpg,.jpeg">
+                            </div>
+                            <div class="text-danger small mt-1" *ngIf="contractFileError">{{ contractFileError }}</div>
+                            <div class="text-success small mt-1" *ngIf="contractFileName"><i
+                                    class="bi bi-check-circle me-1"></i>{{ contractFileName }}</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-navy w-100 py-2 mt-2" (click)="nextSignupStep()">
+                            Next Step <i class="bi bi-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Account Details -->
+                <div *ngIf="currentSignupStep === 2" class="step-container">
+                    <div class="row g-2">
+                        <!-- Email & Code -->
+                        <div class="col-12">
+                            <label for="staffEmail" class="form-label">Univen Email <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control border-start-0 ps-0" id="staffEmail"
+                                    formControlName="staffEmail" [class.is-invalid]="isFieldInvalid('staffEmail')"
+                                    placeholder="userid@univen.ac.za or userid@mvula.univen.ac.za"
+                                    (input)="onEmailInput($event)">
+                                <button class="btn btn-outline-navy btn-sm" type="button" (click)="sendSignupCode()"
+                                    [disabled]="isSignupCodeSent || signupForm.get('staffEmail')?.invalid">
+                                    <i class="bi bi-send me-1"></i>
+                                    <span *ngIf="!isSignupCodeSent">Send</span>
+                                    <span *ngIf="isSignupCodeSent">{{ signupCountdown }}s</span>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback d-block" *ngIf="isFieldInvalid('staffEmail')">
+                                Valid Univen email required
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <label for="verificationCode" class="form-label">Verification Code
+                                <span class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-key"></i></span>
+                                <input [type]="showSignupVerification ? 'text' : 'password'"
+                                    class="form-control border-start-0 ps-0" id="verificationCode"
+                                    formControlName="verificationCode"
+                                    [class.is-invalid]="isFieldInvalid('verificationCode')" placeholder="6-digit code"
+                                    maxlength="6">
+                                <button type="button" class="btn btn-outline-secondary border-start-0"
+                                    (click)="showSignupVerification = !showSignupVerification" tabindex="-1">
+                                    <i class="bi" [ngClass]="showSignupVerification ? 'bi-eye-slash' : 'bi-eye'"></i>
+                                </button>
+                                <span class="input-group-text bg-light text-muted"
+                                    *ngIf="signupVerificationCode && isSignupCodeSent"
+                                    style="font-family: monospace; letter-spacing: 2px; font-weight: bold; cursor: pointer;"
+                                    (click)="signupCountdown === 0 ? sendSignupCode() : copyCode(signupVerificationCode)"
+                                    [title]="signupCountdown === 0 ? 'Click to resend code' : 'Click to copy code'">
+                                    <span class="blurry-text">{{ signupVerificationCode }}</span>
+                                    <i class="bi ms-2"
+                                        [ngClass]="signupCountdown === 0 ? 'bi-arrow-clockwise text-warning' : 'bi-clipboard text-primary'"></i>
+                                    <small *ngIf="signupCountdown === 0" class="ms-1 text-warning"
+                                        style="font-size: 0.7rem; letter-spacing: 0;">Resend</small>
+                                </span>
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('verificationCode')">
+                                6-digit code required
+                            </div>
+                        </div>
+
+                        <!-- Department & Field -->
+                        <div class="col-12 col-md-6 mt-2">
+                            <label for="department" class="form-label">Department <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-diagram-3"></i></span>
+                                <select class="form-select form-select border-start-0 ps-0" id="department"
+                                    formControlName="department" [class.is-invalid]="isFieldInvalid('department')">
+                                    <option value="" disabled selected>{{ loadingDepartments ? 'Loading...' : 'Select
+                                        department' }}
+                                    </option>
+                                    <option *ngFor="let dept of departments" [value]="dept.name">{{ dept.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('department')">
+                                Department is required
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mt-2">
+                            <label for="field" class="form-label">Field <span class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-briefcase"></i></span>
+                                <select class="form-select form-select border-start-0 ps-0" id="field"
+                                    formControlName="field" [class.is-invalid]="isFieldInvalid('field')">
+                                    <option value="" disabled selected>{{ !selectedDepartment ? 'Select dept first' :
+                                        'Select field' }}
+                                    </option>
+                                    <option *ngFor="let field of availableFields" [value]="field">{{ field }}</option>
+                                </select>
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('field')">
+                                Field is required
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="col-12 col-md-6 mt-2" *ngIf="!isUnivenStudent">
+                            <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-lock"></i></span>
+                                <input [type]="showSignupPassword ? 'text' : 'password'"
+                                    class="form-control border-start-0 ps-0" id="password" formControlName="password"
+                                    [class.is-invalid]="isFieldInvalid('password')" placeholder="Min 8 chars">
+                                <button type="button" class="btn btn-outline-secondary border-start-0"
+                                    (click)="showSignupPassword = !showSignupPassword" tabindex="-1">
+                                    <i class="bi" [ngClass]="showSignupPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
+                                Weak password
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mt-2" *ngIf="!isUnivenStudent">
+                            <label for="confirmPassword" class="form-label">Confirm Password <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group input-group">
+                                <span class="input-group-text bg-white border-end-0 text-muted"><i
+                                        class="bi bi-shield-lock"></i></span>
+                                <input [type]="showSignupConfirmPassword ? 'text' : 'password'"
+                                    class="form-control border-start-0 ps-0" id="confirmPassword"
+                                    formControlName="confirmPassword"
+                                    [class.is-invalid]="isFieldInvalid('confirmPassword')"
+                                    placeholder="Confirm password">
+                                <button type="button" class="btn btn-outline-secondary border-start-0"
+                                    (click)="showSignupConfirmPassword = !showSignupConfirmPassword" tabindex="-1">
+                                    <i class="bi" [ngClass]="showSignupConfirmPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback" *ngIf="isFieldInvalid('confirmPassword')">
+                                Passwords must match
+                            </div>
+                        </div>
+
+                        <!-- Terms -->
+                        <div class="col-12 mt-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="acceptTerms"
+                                    formControlName="acceptTerms" [class.is-invalid]="isFieldInvalid('acceptTerms')">
+                                <label class="form-check-label form-check-label-sm" for="acceptTerms">
+                                    I agree to the <a href="javascript:void(0)" class="link-primary"
+                                        (click)="$event.preventDefault(); openTermsModal()">Terms & Conditions</a> <span
+                                        class="text-danger">*</span>
+                                </label>
+                                <div class="invalid-feedback-sm d-block" *ngIf="isFieldInvalid('acceptTerms')">
+                                    You must accept the terms
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="button" class="btn btn-outline-secondary btn-sm w-50" (click)="prevSignupStep()">
+                            <i class="bi bi-arrow-left me-1"></i> Back
+                        </button>
+                        <button type="submit" class="btn btn-navy btn-sm w-50" [disabled]="isSignupSubmitting">
+                            <span *ngIf="!isSignupSubmitting">
+                                <i class="bi bi-person-plus me-2"></i>Create Account
+                            </span>
+                            <span *ngIf="isSignupSubmitting">
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                                Creating...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="d-flex flex-column align-items-center gap-2 mt-4">
+                <span class="text-muted small">Already have an account?</span>
+                <a routerLink="/login" class="btn btn-link signup-link w-100">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>Sign In
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

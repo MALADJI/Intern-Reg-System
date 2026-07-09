@@ -1,0 +1,104 @@
+<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 forced-bg py-2">
+  <div class="card shadow-lg rounded-3 border-0 glass-morphism d-flex flex-column" style="max-width: 380px; width: 95%; max-height: 98vh; padding: 1rem; overflow-y: auto;">
+    <div class="text-center mb-2">
+      <div class="icon-circle bg-primary text-white mx-auto mb-1" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+        <i class="bi bi-camera-fill" style="font-size: 1rem;"></i>
+      </div>
+      <h6 class="fw-bold mb-0">Facial Setup</h6>
+      <p class="text-muted smaller mb-0">Secure your account with facial verification.</p>
+    </div>
+
+    <div class="alert mb-2 text-center smaller py-1" [ngClass]="{
+      'alert-secondary': phase === 'VALIDATING',
+      'alert-primary': phase === 'CAPTURE_BASELINE' && !cameraError,
+      'alert-warning': phase === 'CAPTURE_BASELINE' && cameraError,
+      'alert-success': phase === 'SUCCESS',
+      'alert-danger': phase === 'ERROR'
+    }">
+      <i class="bi me-1" [ngClass]="{
+        'bi-arrow-repeat spin': phase === 'VALIDATING',
+        'bi-camera': phase === 'CAPTURE_BASELINE' && !cameraError,
+        'bi-camera-video-off-fill': phase === 'CAPTURE_BASELINE' && cameraError,
+        'bi-check-circle-fill': phase === 'SUCCESS',
+        'bi-exclamation-triangle-fill': phase === 'ERROR'
+      }"></i>
+      <strong>{{ statusMessage }}</strong>
+    </div>
+
+    <!-- Camera error detail banner -->
+    <div class="alert alert-warning border-warning mb-2 py-1 smaller" *ngIf="cameraError && phase === 'CAPTURE_BASELINE'">
+      <div class="d-flex align-items-start gap-2">
+        <i class="bi bi-exclamation-triangle-fill text-warning mt-1 flex-shrink-0"></i>
+        <div>
+          <strong class="d-block mb-0">Camera Access Issue</strong>
+          <span>{{ cameraErrorMessage }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="camera-container mb-2 shadow-sm rounded-3 overflow-hidden position-relative bg-dark mx-auto" [class.d-none]="phase === 'LOADING' || phase === 'SUCCESS'" style="aspect-ratio: 4/3; width: 100%; max-height: 35vh;">
+      <video #videoElement class="w-100 h-100 object-fit-cover" style="transform: scaleX(-1);" autoplay muted playsinline></video>
+      
+      <!-- Scan Line Animation -->
+      <div class="scan-line" *ngIf="phase === 'VALIDATING'"></div>
+      
+      <!-- Face Guide Overlays -->
+      <div class="face-guide" *ngIf="phase === 'CAPTURE_BASELINE' || phase === 'VALIDATING'">
+        <div class="corner top-left"></div>
+        <div class="corner top-right"></div>
+        <div class="corner bottom-left"></div>
+        <div class="corner bottom-right"></div>
+      </div>
+      
+      <!-- Switch Camera Button Overlay - always visible so user can cycle cameras -->
+      <button class="btn btn-sm btn-dark position-absolute bottom-0 end-0 m-1 rounded-circle shadow" 
+        (click)="switchCamera()" 
+        *ngIf="phase === 'CAPTURE_BASELINE' || phase === 'VALIDATING'"
+        title="Switch Camera"
+        style="width: 32px; height: 32px; padding: 0; opacity: 0.85; z-index: 10;">
+        <i class="bi bi-arrow-repeat"></i>
+      </button>
+    </div>
+
+    <!-- Hidden canvas for capturing image data -->
+    <canvas #canvasElement style="display: none;"></canvas>
+
+    <div class="mt-auto">
+      <!-- Turn on Camera button: shown when no stream active (camera not yet started or failed) -->
+      <button type="button" class="btn btn-warning btn-sm w-100 fw-bold mb-2 shadow-sm py-1" 
+        (click)="startCamera()" 
+        *ngIf="phase === 'CAPTURE_BASELINE' && !stream">
+        <i class="bi bi-camera-video-fill me-1"></i>
+        {{ cameraError ? 'Retry Camera' : 'Turn on Camera' }}
+      </button>
+
+      <button type="button" class="btn btn-primary btn-sm w-100 fw-bold mb-2 shadow-sm py-1" 
+        (click)="captureAndSave()" 
+        [disabled]="isSaving"
+        *ngIf="phase === 'CAPTURE_BASELINE' && stream">
+        <i class="bi bi-camera me-1"></i> {{ isSaving ? 'Analyzing...' : 'Capture Face' }}
+      </button>
+
+      <!-- Switch Camera button - always visible below camera feed -->
+      <button type="button" class="btn btn-outline-secondary btn-sm w-100 fw-semibold mb-2 py-1"
+        (click)="switchCamera()"
+        *ngIf="(phase === 'CAPTURE_BASELINE' || phase === 'VALIDATING') && !cameraError"
+        title="Cycle to next available camera">
+        <i class="bi bi-arrow-repeat me-1"></i>
+        Switch Camera {{ videoDevices.length > 1 ? '(' + (currentCameraIndex + 1) + '/' + videoDevices.length + ')' : '' }}
+      </button>
+
+      <button type="button" class="btn btn-primary btn-sm w-100 fw-bold mb-2 shadow-sm py-1" 
+        (click)="ngOnInit()" 
+        *ngIf="phase === 'ERROR'">
+        <i class="bi bi-arrow-clockwise me-1"></i> Try Again
+      </button>
+    </div>
+
+    <div class="text-center mt-1 pt-1 border-top" style="font-size: 0.65rem;">
+      <p class="text-muted mb-0">
+        <i class="bi bi-shield-check text-success"></i> Your facial data is securely processed locally.
+      </p>
+    </div>
+  </div>
+</div>

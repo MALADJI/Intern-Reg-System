@@ -1,0 +1,66 @@
+<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 forced-bg">
+    <div class="card shadow-lg rounded-3 border-0 glass-morphism"
+        style="max-width: 460px; width: 95%; padding: 1.5rem;">
+
+        <!-- Header -->
+        <div class="text-center mb-3">
+            <div class="icon-circle bg-primary text-white mx-auto mb-2"
+                style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                <i class="bi bi-building" style="font-size: 1.2rem;"></i>
+            </div>
+            <h6 class="fw-bold mb-1">Welcome, {{ user?.name || 'Staff Member' }}</h6>
+            <p class="text-muted smaller mb-0">Please confirm your active department to continue.</p>
+        </div>
+
+        <!-- Staff Info Row -->
+        <div class="staff-info-row mb-3 p-3 rounded-3">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon-circle bg-primary text-white flex-shrink-0"
+                    style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                    <i class="bi bi-person-badge-fill" style="font-size: 1rem;"></i>
+                </div>
+                <div class="flex-grow-1 min-w-0">
+                    <div class="smaller text-muted fw-semibold text-uppercase mb-1" style="letter-spacing: 0.8px;">Staff
+                        Details</div>
+                    <strong class="d-block text-truncate" style="color: #1e3a5f; font-size: 0.95rem;">
+                        {{ user?.name }} {{ user?.surname }}
+                    </strong>
+                    <div class="d-flex align-items-center gap-2 mt-1 flex-wrap">
+                        <span class="badge bg-primary smaller rounded-pill">{{ user?.role }}</span>
+                        <span class="text-muted smaller text-truncate" *ngIf="user?.email">{{ user?.email }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Department Form -->
+        <form (ngSubmit)="onProceed()">
+            <div class="mb-3">
+                <label for="departmentSelect" class="form-label fw-semibold smaller" style="color: #1e3a5f;">
+                    Select Department <span class="text-danger">*</span>
+                </label>
+
+                <div *ngIf="isLoading" class="text-center p-3 rounded-3"
+                    style="background: rgba(13,110,253,0.04); border: 1px dashed #d0d7e0;">
+                    <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+                    <span class="ms-2 text-muted smaller">Loading departments...</span>
+                </div>
+
+                <select *ngIf="!isLoading" id="departmentSelect" class="form-select shadow-sm"
+                    [(ngModel)]="selectedDepartmentId" name="departmentId" required
+                    style="border-radius: 12px; font-size: 0.92rem; padding: 0.65rem 1rem; border: 1px solid #d0d7e0;">
+                    <option [ngValue]="null" disabled>— Choose a department —</option>
+                    <option *ngFor="let dept of departments" [ngValue]="dept.departmentId">{{ dept.name }}</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold shadow-sm py-2"
+                [disabled]="!selectedDepartmentId || isSaving">
+                <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
+                <i class="bi bi-check2-circle me-1" *ngIf="!isSaving"></i>
+                {{ isSaving ? 'Saving...' : 'Proceed to Dashboard' }}
+            </button>
+        </form>
+
+    </div>
+</div>

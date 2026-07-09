@@ -1,0 +1,16 @@
+/* User Surname Display */
+.navbar-surname {
+    height: 60px;
+    background: linear-gradient(135deg, rgba(30, 58, 95, 0.05) 0%, rgba(30, 58, 95, 0.02) 100%);
+    border-left: 1px solid rgba(30, 58, 95, 0.1);
+    min-width: 120px;
+    transition: all 0.3s ease;
+}
+
+.surname-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--univen-navy);
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+}
