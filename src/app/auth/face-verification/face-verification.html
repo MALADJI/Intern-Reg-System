@@ -1,5 +1,6 @@
 <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 forced-bg py-2">
-  <div class="card shadow-lg rounded-3 border-0 glass-morphism d-flex flex-column" style="max-width: 400px; width: 95%; max-height: 98vh; padding: 1rem; overflow-y: auto;">
+  <div class="card shadow-lg rounded-3 border-0 glass-morphism d-flex flex-column"
+    style="max-width: 400px; width: 95%; max-height: 98vh; padding: 1rem; overflow-y: auto;">
 
     <!-- Header -->
     <div class="text-center mb-2">
@@ -62,12 +63,15 @@
       [class.d-none]="phase === 'SUCCESS'"
       style="aspect-ratio: 4/3; width: 100%; max-height: 35vh; border: 2px solid rgba(255,255,255,0.15);">
 
-      <video #videoElement class="w-100 h-100 object-fit-cover" style="transform: scaleX(-1);" autoplay muted playsinline></video>
+      <video #videoElement class="w-100 h-100 object-fit-cover" style="transform: scaleX(-1);" autoplay muted
+        playsinline></video>
 
       <!-- Scan overlay -->
       <div class="scan-overlay" *ngIf="phase === 'SCANNING'"
         style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;background:rgba(0,100,255,0.1);">
-        <div style="border: 3px solid #0d6efd; border-radius: 50%; width: 120px; height: 160px; animation: pulse 1s infinite;"></div>
+        <div
+          style="border: 3px solid #0d6efd; border-radius: 50%; width: 120px; height: 160px; animation: pulse 1s infinite;">
+        </div>
       </div>
 
       <!-- Loading overlay -->
@@ -75,12 +79,10 @@
         style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);">
         <div class="spinner-border text-primary" role="status"></div>
       </div>
-      
+
       <!-- Switch Camera Button Overlay - always visible so user can cycle cameras -->
-      <button class="btn btn-sm btn-dark position-absolute bottom-0 end-0 m-1 rounded-circle shadow" 
-        (click)="switchCamera()" 
-        *ngIf="phase === 'READY' || phase === 'SCANNING'"
-        title="Switch Camera"
+      <button class="btn btn-sm btn-dark position-absolute bottom-0 end-0 m-1 rounded-circle shadow"
+        (click)="switchCamera()" *ngIf="phase === 'READY' || phase === 'SCANNING'" title="Switch Camera"
         style="width: 32px; height: 32px; padding: 0; opacity: 0.85; z-index: 10;">
         <i class="bi bi-arrow-repeat"></i>
       </button>
@@ -97,10 +99,8 @@
     <!-- Buttons Container to save space -->
     <div class="mt-auto">
       <!-- MAIN SCAN BUTTON -->
-      <button type="button" class="btn btn-primary w-100 fw-bold mb-2 shadow-sm py-1"
-        (click)="scanFace()"
-        [disabled]="isScanning || cameraError"
-        *ngIf="phase === 'READY' || phase === 'SCANNING'">
+      <button type="button" class="btn btn-primary w-100 fw-bold mb-2 shadow-sm py-1" (click)="scanFace()"
+        [disabled]="isScanning || cameraError" *ngIf="phase === 'READY' || phase === 'SCANNING'">
         <span *ngIf="!isScanning">
           <i class="bi bi-person-bounding-box me-2"></i>Scan My Face
         </span>
@@ -110,31 +110,27 @@
       </button>
 
       <!-- Retry camera button -->
-      <button type="button" class="btn btn-warning w-100 fw-bold mb-2 shadow-sm py-1"
-        (click)="retryCamera()"
+      <button type="button" class="btn btn-warning w-100 fw-bold mb-2 shadow-sm py-1" (click)="retryCamera()"
         *ngIf="cameraError">
         <i class="bi bi-camera-video-fill me-1"></i> Retry Camera
       </button>
 
       <!-- Switch Camera button - always visible below camera feed -->
-      <button type="button" class="btn btn-outline-secondary w-100 fw-semibold mb-2 py-1"
-        (click)="switchCamera()"
-        *ngIf="(phase === 'READY' || phase === 'SCANNING') && !cameraError"
-        title="Cycle to next available camera">
+      <button type="button" class="btn btn-outline-secondary w-100 fw-semibold mb-2 py-1" (click)="switchCamera()"
+        *ngIf="(phase === 'READY' || phase === 'SCANNING') && !cameraError" title="Cycle to next available camera">
         <i class="bi bi-arrow-repeat me-1"></i>
-        Switch Camera {{ videoDevices.length > 1 ? '(' + (currentCameraIndex + 1) + '/' + videoDevices.length + ')' : '' }}
+        Switch Camera {{ videoDevices.length > 1 ? '(' + (currentCameraIndex + 1) + '/' + videoDevices.length + ')' : ''
+        }}
       </button>
 
       <!-- Try Again after ERROR -->
-      <button type="button" class="btn btn-primary w-100 fw-bold mb-2 shadow-sm py-1"
-        (click)="ngOnInit()"
+      <button type="button" class="btn btn-primary w-100 fw-bold mb-2 shadow-sm py-1" (click)="ngOnInit()"
         *ngIf="phase === 'ERROR'">
         <i class="bi bi-arrow-clockwise me-1"></i> Try Again
       </button>
 
       <!-- Logout -->
-      <button type="button" class="btn btn-outline-secondary w-100 fw-bold mb-2 py-1"
-        (click)="logout()"
+      <button type="button" class="btn btn-outline-secondary w-100 fw-bold mb-2 py-1" (click)="logout()"
         *ngIf="phase !== 'SUCCESS'">
         <i class="bi bi-box-arrow-left me-1"></i> Logout
       </button>
